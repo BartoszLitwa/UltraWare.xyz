@@ -1,0 +1,9 @@
+#pragma once
+#include "hooks.hpp"
+#include "singleton.hpp"
+#include "helpers/math.hpp"
+#include "valve_sdk/sdk.hpp"
+#include "valve_sdk/netvars.hpp"
+#include "valve_sdk/csgostructs.hpp"
+#include "valve_sdk/misc/Color.hpp"
+#include "valve_sdk/misc/CUserCmd.hpp"

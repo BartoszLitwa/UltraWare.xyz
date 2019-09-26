@@ -1,0 +1,136 @@
+﻿D:\Visual Studio 2019\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(437,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
+D:\Visual Studio 2019\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(438,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  BackTrack.cpp
+  BuyBot.cpp
+  Hitmarker.cpp
+  Prediction.cpp
+D:\Desktop\CRNYY's Internal\CSGOSimple\BackTrack.cpp(48,54): warning C4018:  '>': signed/unsigned mismatch
+D:\Desktop\CRNYY's Internal\CSGOSimple\options.hpp(288,35): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Desktop\CRNYY's Internal\CSGOSimple\options.hpp(330,31): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Desktop\CRNYY's Internal\CSGOSimple\options.hpp(339,30): warning C4305:  'initializing': truncation from 'double' to 'float'
+  LogEvents.cpp
+D:\Desktop\CRNYY's Internal\CSGOSimple\options.hpp(1388,16): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
+D:\Desktop\UltraWare Internal\CSGOSimple\features\LogEvents.cpp(18,20): warning C4018:  '<': signed/unsigned mismatch
+D:\Desktop\UltraWare Internal\CSGOSimple\features\LogEvents.cpp(37,20): warning C4018:  '<': signed/unsigned mismatch
+D:\Desktop\UltraWare Internal\CSGOSimple\features\LogEvents.cpp(102,20): warning C4018:  '<': signed/unsigned mismatch
+D:\Desktop\UltraWare Internal\CSGOSimple\features\LogEvents.cpp(203,20): warning C4018:  '<': signed/unsigned mismatch
+D:\Desktop\UltraWare Internal\CSGOSimple\features\LogEvents.cpp(239,20): warning C4018:  '<': signed/unsigned mismatch
+D:\Desktop\UltraWare Internal\CSGOSimple\features\LogEvents.cpp(275,20): warning C4018:  '<': signed/unsigned mismatch
+D:\Desktop\UltraWare Internal\CSGOSimple\features\LogEvents.cpp(311,20): warning C4018:  '<': signed/unsigned mismatch
+  LogEvents.hpp
+  SpotMarkers.cpp
+D:\Desktop\UltraWare Internal\CSGOSimple\features\LogEvents.cpp(347,20): warning C4018:  '<': signed/unsigned mismatch
+D:\Desktop\CRNYY's Internal\CSGOSimple\features\SpotMarkers.cpp(31,13): warning C4018:  '>': signed/unsigned mismatch
+D:\Desktop\CRNYY's Internal\CSGOSimple\features\SpotMarkers.cpp(64,20): warning C4018:  '<': signed/unsigned mismatch
+  AntiAim.cpp
+  Autowall.cpp
+  bhop.cpp
+D:\Desktop\CRNYY's Internal\CSGOSimple\features\SpotMarkers.cpp(138,21): warning C4018:  '<': signed/unsigned mismatch
+D:\Desktop\UltraWare Internal\CSGOSimple\options.hpp(288,35): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Desktop\UltraWare Internal\CSGOSimple\options.hpp(330,31): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Desktop\UltraWare Internal\CSGOSimple\options.hpp(339,30): warning C4305:  'initializing': truncation from 'double' to 'float'
+D:\Desktop\UltraWare Internal\CSGOSimple\options.hpp(1388,16): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
+  chams.cpp
+D:\Desktop\UltraWare Internal\CSGOSimple\features\bhop.cpp(404,23): warning C4018:  '<=': signed/unsigned mismatch
+  glow.cpp
+  Legitbot.cpp
+D:\Desktop\UltraWare Internal\CSGOSimple\features\chams.cpp(205,24): warning C4018:  '<': signed/unsigned mismatch
+  Ragebot.cpp
+D:\Desktop\UltraWare Internal\CSGOSimple\features\Legitbot.cpp(123,23): warning C4018:  '<=': signed/unsigned mismatch
+  visuals.cpp
+D:\Desktop\UltraWare Internal\CSGOSimple\features\Ragebot.cpp(142,22): warning C4018:  '<': signed/unsigned mismatch
+D:\Desktop\UltraWare Internal\CSGOSimple\features\visuals.cpp(129,27): warning C4018:  '<': signed/unsigned mismatch
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,49): warning C4244:  'argument': conversion from 'T' to 'float', possible loss of data
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,49): warning C4244:         with
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,49): warning C4244:         [
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,49): warning C4244:             T=LONG
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,49): warning C4244:         ]
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(97): message :  see reference to function template instantiation 'void Render::RenderBox<LONG>(T,T,T,T,Color,float,float)' being compiled
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(97): message :         with
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(97): message :         [
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(97): message :             T=LONG
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(97): message :         ]
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,45): warning C4244:  'argument': conversion from 'T' to 'float', possible loss of data
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,45): warning C4244:         with
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,45): warning C4244:         [
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,45): warning C4244:             T=LONG
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,45): warning C4244:         ]
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,33): warning C4244:  'argument': conversion from 'T' to 'float', possible loss of data
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,33): warning C4244:         with
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,33): warning C4244:         [
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,33): warning C4244:             T=LONG
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,33): warning C4244:         ]
+  input.cpp
+  math.cpp
+  utils.cpp
+  vfunc_hook.cpp
+  hooks.cpp
+  Generating Code...
+  Compiling...
+  imgui.cpp
+  imgui_draw.cpp
+  imgui_widgets.cpp
+  imgui_impl_dx9.cpp
+  imgui_impl_win32.cpp
+  main.cpp
+  menu.cpp
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,29): warning C4244:  'argument': conversion from 'T' to 'float', possible loss of data
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,29): warning C4244:         with
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,29): warning C4244:         [
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,29): warning C4244:             T=LONG
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,29): warning C4244:         ]
+D:\Desktop\UltraWare Internal\CSGOSimple\menu.cpp(47,43): warning C4129:  'i': unrecognized character escape sequence
+D:\Desktop\UltraWare Internal\CSGOSimple\menu.cpp(47,72): warning C4553:  '==': result of expression not used; did you intend '='?
+D:\Desktop\UltraWare Internal\CSGOSimple\menu.cpp(48,70): warning C4553:  '==': result of expression not used; did you intend '='?
+D:\Desktop\UltraWare Internal\CSGOSimple\menu.cpp(49,43): warning C4129:  '.': unrecognized character escape sequence
+D:\Desktop\UltraWare Internal\CSGOSimple\menu.cpp(49,43): warning C4129:  'i': unrecognized character escape sequence
+D:\Desktop\UltraWare Internal\CSGOSimple\menu.cpp(49,76): warning C4553:  '==': result of expression not used; did you intend '='?
+D:\Desktop\UltraWare Internal\CSGOSimple\menu.cpp(50,63): warning C4553:  '==': result of expression not used; did you intend '='?
+  render.cpp
+D:\Desktop\UltraWare Internal\CSGOSimple\menu.cpp(51,69): warning C4553:  '==': result of expression not used; did you intend '='?
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,49): warning C4244:  'argument': conversion from 'T' to 'float', possible loss of data
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,49): warning C4244:         with
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,49): warning C4244:         [
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,49): warning C4244:             T=LONG
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,49): warning C4244:         ]
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(97): message :  see reference to function template instantiation 'void Render::RenderBox<LONG>(T,T,T,T,Color,float,float)' being compiled
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(97): message :         with
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(97): message :         [
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(97): message :             T=LONG
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(97): message :         ]
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,45): warning C4244:  'argument': conversion from 'T' to 'float', possible loss of data
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,45): warning C4244:         with
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,45): warning C4244:         [
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,45): warning C4244:             T=LONG
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,45): warning C4244:         ]
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,33): warning C4244:  'argument': conversion from 'T' to 'float', possible loss of data
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,33): warning C4244:         with
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,33): warning C4244:         [
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,33): warning C4244:             T=LONG
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,33): warning C4244:         ]
+  SkinChanger.cpp
+  ui.cpp
+  csgostructs.cpp
+  sdk.cpp
+  Vector2D.cpp
+  Vector4D.cpp
+  VMatrix.cpp
+  characterset.cpp
+  checksum_crc.cpp
+  checksum_md5.cpp
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,29): warning C4244:  'argument': conversion from 'T' to 'float', possible loss of data
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,29): warning C4244:         with
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,29): warning C4244:         [
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,29): warning C4244:             T=LONG
+D:\Desktop\UltraWare Internal\CSGOSimple\render.hpp(94,29): warning C4244:         ]
+  Color.cpp
+  Convar.cpp
+  Generating Code...
+  Compiling...
+  UtlBuffer.cpp
+  UtlString.cpp
+  netvars.cpp
+  Generating Code...
+D:\Desktop\UltraWare Internal\CSGOSimple\valve_sdk\misc\checksum_md5.cpp(27,14): warning C5033:  'register' is no longer a supported storage class
+..\build\CSGOSimple\Debug\LogEvents.obj : warning LNK4042: object specified more than once; extras ignored
+  CSGOSimple.vcxproj -> D:\Desktop\UltraWare Internal\CSGOSimple\..\bin\Debug\Internal.dll
