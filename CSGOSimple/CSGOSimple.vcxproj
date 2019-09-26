@@ -98,9 +98,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\BackTrack.cpp" />
-    <ClCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\features\BuyBot.cpp" />
-    <ClCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\features\Hitmarker.cpp" />
+    <ClCompile Include="features\BackTrack.cpp" />
+    <ClCompile Include="features\BuyBot.cpp" />
+    <ClCompile Include="features\Hitmarker.cpp" />
     <ClCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\features\Prediction.cpp" />
     <ClCompile Include="features\LogEvents.cpp" />
     <ClCompile Include="features\LogEvents.hpp" />
@@ -126,7 +126,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="render.cpp" />
-    <ClCompile Include="SkinChanger.cpp" />
+    <ClCompile Include="features\SkinChanger.cpp" />
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="valve_sdk\csgostructs.cpp" />
     <ClCompile Include="valve_sdk\sdk.cpp" />
@@ -143,13 +143,13 @@
     <ClCompile Include="valve_sdk\netvars.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\BackTrack.hpp" />
-    <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\features\BuyBot.hpp" />
-    <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\features\Hitmarker.hpp" />
+    <ClInclude Include="features\BackTrack.hpp" />
+    <ClInclude Include="features\BuyBot.hpp" />
+    <ClInclude Include="features\Hitmarker.hpp" />
     <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\features\Prediction.hpp" />
     <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\features\SpotMarkers.hpp" />
-    <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\GlobalVariables.hpp" />
     <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\resource.h" />
+    <ClInclude Include="g_Variables.hpp" />
     <ClInclude Include="valve_sdk\interfaces\IViewRenderBeams.cpp" />
     <ClInclude Include="EventListeners.hpp" />
     <ClInclude Include="config.hpp" />
@@ -162,7 +162,7 @@
     <ClInclude Include="imgui\impl\imgui_impl_dx9.h" />
     <ClInclude Include="imgui\impl\imgui_impl_win32.h" />
     <ClInclude Include="Includes.h" />
-    <ClInclude Include="SkinChanger.hpp" />
+    <ClInclude Include="features\SkinChanger.hpp" />
     <ClInclude Include="valve_sdk\Misc\datamap.hpp" />
     <ClInclude Include="fonts\droid.hpp" />
     <ClInclude Include="features\bhop.hpp" />

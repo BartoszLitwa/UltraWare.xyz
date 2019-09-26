@@ -1,87 +1,19 @@
 #include "chams.hpp"
 #include <fstream>
-#include "..//BackTrack.hpp"
+#include "BackTrack.hpp"
 #include "../valve_sdk/csgostructs.hpp"
 #include "../options.hpp"
 #include "../hooks.hpp"
 #include "../helpers/input.hpp"
 
-
 Chams::Chams()
 {
-	/*std::ofstream("csgo\\materials\\simple_regular.vmt") << R"#("VertexLitGeneric"
-{
-  "$basetexture" "vgui/white_additive"
-  "$ignorez"      "0"
-  "$envmap"       ""
-  "$nofog"        "1"
-  "$model"        "1"
-  "$nocull"       "0"
-  "$selfillum"    "1"
-  "$halflambert"  "1"
-  "$znearer"      "0"
-  "$flat"         "1"
-}
-)#";
-	std::ofstream("csgo\\materials\\simple_ignorez.vmt") << R"#("VertexLitGeneric"
-{
-  "$basetexture" "vgui/white_additive"
-  "$ignorez"      "1"
-  "$envmap"       ""
-  "$nofog"        "1"
-  "$model"        "1"
-  "$nocull"       "0"
-  "$selfillum"    "1"
-  "$halflambert"  "1"
-  "$znearer"      "0"
-  "$flat"         "1"
-}
-)#";
-	std::ofstream("csgo\\materials\\simple_flat.vmt") << R"#("UnlitGeneric"
-{
-  "$basetexture" "vgui/white_additive"
-  "$ignorez"      "0"
-  "$envmap"       ""
-  "$nofog"        "1"
-  "$model"        "1"
-  "$nocull"       "0"
-  "$selfillum"    "1"
-  "$halflambert"  "1"
-  "$znearer"      "0"
-  "$flat"         "1"
-}
-)#";
-
-	std::ofstream("csgo\\materials\\simple_flat_ignorez.vmt") << R"#("UnlitGeneric"
-{
-  "$basetexture" "vgui/white_additive"
-  "$ignorez"      "1"
-  "$envmap"       ""
-  "$nofog"        "1"
-  "$model"        "1"
-  "$nocull"       "0"
-  "$selfillum"    "1"
-  "$halflambert"  "1"
-  "$znearer"      "0"
-  "$flat"         "1"
-}
-)#";
-
-	materialRegular = g_MatSystem->FindMaterial("simple_regular", TEXTURE_GROUP_MODEL);
-	materialRegularIgnoreZ = g_MatSystem->FindMaterial("simple_ignorez", TEXTURE_GROUP_MODEL);
-	materialFlatIgnoreZ = g_MatSystem->FindMaterial("simple_flat_ignorez", TEXTURE_GROUP_MODEL);
-	materialFlat = g_MatSystem->FindMaterial("simple_flat", TEXTURE_GROUP_MODEL);*/
-
 	materialRegular = g_MatSystem->FindMaterial("debug/debugambientcube");
 	materialFlat = g_MatSystem->FindMaterial("debug/debugdrawflat");
 }
 
 Chams::~Chams()
 {
-	/*std::remove("csgo\\materials\\simple_regular.vmt");
-	std::remove("csgo\\materials\\simple_ignorez.vmt");
-	std::remove("csgo\\materials\\simple_flat.vmt");
-	std::remove("csgo\\materials\\simple_flat_ignorez.vmt");*/
 }
 
 
@@ -89,18 +21,6 @@ void Chams::OverrideMaterial(bool ignoreZ, bool flat, bool wireframe, bool glass
 {
 	IMaterial* material = nullptr;
 
-	/*if (flat) {
-		if (ignoreZ)
-			material = materialFlatIgnoreZ;
-		else
-			material = materialFlat;
-	}
-	else {
-		if (ignoreZ)
-			material = materialRegularIgnoreZ;
-		else
-			material = materialRegular;
-	}*/
 	if (flat) {
 		material = materialFlat;
 	}
@@ -128,6 +48,23 @@ void Chams::OverrideMaterial(bool ignoreZ, bool flat, bool wireframe, bool glass
 	g_MdlRender->ForcedMaterialOverride(material);
 }
 
+void Chams::FakeAngles(QAngle Angle, IMatRenderContext* ctx,
+	const DrawModelState_t& state,
+	const ModelRenderInfo_t& info,
+	matrix3x4_t* matrix)
+{
+	if (!g_Options.DeSync)
+		return;
+
+	if (!g_EngineClient->IsConnected() || !g_EngineClient->IsInGame() || !g_LocalPlayer || !g_LocalPlayer->IsAlive())
+		return;
+
+	static auto fnDME = Hooks::mdlrender_hook.get_original<decltype(&Hooks::hkDrawModelExecute)>(index::DrawModelExecute);
+
+	OverrideMaterial(false, false, false, true, Color(0,255,0,255));
+	fnDME(g_MdlRender, 0, ctx, state, info, matrix);
+	g_MdlRender->ForcedMaterialOverride(nullptr);
+}
 
 void Chams::OnDrawModelExecute(
 	IMatRenderContext* ctx,
@@ -151,8 +88,13 @@ void Chams::OnDrawModelExecute(
 		// 
 		auto ent = C_BasePlayer::GetPlayerByIndex(info.entity_index);
 
-		if (ent && g_LocalPlayer && ent->IsAlive() && g_LocalPlayer->IsAlive() ) {
+		if (ent && g_LocalPlayer && ent->IsAlive() ) {
 			if (ent == g_LocalPlayer) {
+				if (g_Options.DeSync) {
+					OverrideMaterial(false, false, false, true, Color(0, 255, 0, 255));
+					fnDME(g_MdlRender, 0, ctx, state, info, BackTrack::LocalMatrix);
+					g_MdlRender->ForcedMaterialOverride(nullptr);
+				}
 			}
 
 			if (ent == g_LocalPlayer && !g_Options.chams_localplayer)

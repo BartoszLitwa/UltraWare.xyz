@@ -134,25 +134,13 @@
     <ClCompile Include="features\AntiAim.cpp">
       <Filter>Source Files\features</Filter>
     </ClCompile>
-    <ClCompile Include="SkinChanger.cpp">
-      <Filter>Source Files\features</Filter>
-    </ClCompile>
     <ClCompile Include="features\Autowall.cpp">
       <Filter>Source Files\features</Filter>
     </ClCompile>
     <ClCompile Include="features\Ragebot.cpp">
       <Filter>Source Files\features</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\BackTrack.cpp">
-      <Filter>Source Files\features</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\features\SpotMarkers.cpp">
-      <Filter>Source Files\features</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\features\BuyBot.cpp">
-      <Filter>Source Files\features</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\features\Hitmarker.cpp">
       <Filter>Source Files\features</Filter>
     </ClCompile>
     <ClCompile Include="features\LogEvents.hpp">
@@ -162,6 +150,18 @@
       <Filter>Source Files\features</Filter>
     </ClCompile>
     <ClCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\features\Prediction.cpp">
+      <Filter>Source Files\features</Filter>
+    </ClCompile>
+    <ClCompile Include="features\BackTrack.cpp">
+      <Filter>Source Files\features</Filter>
+    </ClCompile>
+    <ClCompile Include="features\SkinChanger.cpp">
+      <Filter>Source Files\features</Filter>
+    </ClCompile>
+    <ClCompile Include="features\BuyBot.cpp">
+      <Filter>Source Files\features</Filter>
+    </ClCompile>
+    <ClCompile Include="features\Hitmarker.cpp">
       <Filter>Source Files\features</Filter>
     </ClCompile>
   </ItemGroup>
@@ -436,28 +436,16 @@
     <ClInclude Include="features\AntiAim.hpp">
       <Filter>Header Files\features</Filter>
     </ClInclude>
-    <ClInclude Include="SkinChanger.hpp">
-      <Filter>Header Files\features</Filter>
-    </ClInclude>
     <ClInclude Include="features\Autowall.hpp">
       <Filter>Header Files\features</Filter>
     </ClInclude>
     <ClInclude Include="features\Ragebot.hpp">
       <Filter>Header Files\features</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\BackTrack.hpp">
-      <Filter>Header Files\features</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\features\SpotMarkers.hpp">
       <Filter>Header Files\features</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\features\BuyBot.hpp">
-      <Filter>Header Files\features</Filter>
-    </ClInclude>
     <ClInclude Include="EventListeners.hpp">
-      <Filter>Header Files\features</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\features\Hitmarker.hpp">
       <Filter>Header Files\features</Filter>
     </ClInclude>
     <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\resource.h">
@@ -469,8 +457,20 @@
     <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\features\Prediction.hpp">
       <Filter>Header Files\features</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\GlobalVariables.hpp">
+    <ClInclude Include="g_Variables.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="features\BackTrack.hpp">
+      <Filter>Header Files\features</Filter>
+    </ClInclude>
+    <ClInclude Include="features\SkinChanger.hpp">
+      <Filter>Header Files\features</Filter>
+    </ClInclude>
+    <ClInclude Include="features\BuyBot.hpp">
+      <Filter>Header Files\features</Filter>
+    </ClInclude>
+    <ClInclude Include="features\Hitmarker.hpp">
+      <Filter>Header Files\features</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

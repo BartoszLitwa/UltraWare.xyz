@@ -12,13 +12,14 @@
 #include "features/glow.hpp"
 #include "features/Legitbot.h"
 #include "features/AntiAim.hpp"
-#include "SkinChanger.hpp"
+#include "features/SkinChanger.hpp"
 #include "features/Ragebot.hpp"
-#include "BackTrack.hpp"
+#include "features/BackTrack.hpp"
 #include "features/SpotMarkers.hpp"
 #include "EventListeners.hpp"
 #include "features/Hitmarker.hpp"
 #include "features/LogEvents.hpp"
+#include "g_Variables.hpp"
 
 #pragma intrinsic(_ReturnAddress)  
 
@@ -177,6 +178,16 @@ namespace Hooks {
 
 		if (Menu::Get().IsVisible())
 			cmd->buttons &= ~IN_ATTACK;
+
+		g_Variables::SendPacket = bSendPacket;
+
+		if (bSendPacket) {
+			g_Variables::RealAngles = g_LocalPlayer->m_angEyeAngles();
+		}
+		else
+		{
+			g_Variables::FakeAngles = g_LocalPlayer->m_angEyeAngles();
+		}
 
 		ragebot.CreateMove(cmd, bSendPacket);
 

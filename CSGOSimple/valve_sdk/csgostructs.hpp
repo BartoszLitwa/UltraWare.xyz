@@ -340,6 +340,8 @@ public:
 	QAngle * GetVAngles();
 	float_t m_flSpawnTime();
 
+	void SetAngle2(Vector wantedang);
+
 };
 
 class C_BaseViewModel : public C_BaseEntity

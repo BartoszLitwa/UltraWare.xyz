@@ -100,6 +100,8 @@ void Render::BeginScene() {
 		Render::Get().RenderText( dmg, screen_w / 2 + 10, screen_h / 2 + 10, 14, Color(255, 0, 0), false, true, g_pSecondFont);
 	}
 
+	ragebot.DrawAngles(ragebot.AngleToDrawonScreen);
+
 	hitmarker->paint(screen_w / 2, screen_h /2);
 
 	logevents.Draw(screen_w, screen_h);

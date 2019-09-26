@@ -1,6 +1,6 @@
 #include "Ragebot.hpp"
 #include "..//options.hpp"
-#include "..//BackTrack.hpp"
+#include "BackTrack.hpp"
 
 RageBot ragebot;
 
@@ -76,9 +76,53 @@ bool RageBot::LBYUpdate()
 	return false;
 }
 
+void RageBot::DrawAngles(QAngle Angle)
+{
+	if (!g_Options.DeSync || Angle.IsZero())
+		return;
+
+	if (!g_EngineClient->IsConnected() || !g_EngineClient->IsInGame() || !g_LocalPlayer || !g_LocalPlayer->IsAlive())
+		return;
+
+	Vector src3D, dst3D, forward, forward2, src, dst;
+	trace_t trace;
+	Ray_t ray;
+	CTraceFilter filter;
+	filter.pSkip = g_LocalPlayer;
+
+	src3D = g_LocalPlayer->GetAbsOrigin();
+
+	Math::AngleVectors(QAngle(0, g_LocalPlayer->m_flLowerBodyYawTarget(), 0), forward2);
+	dst3D = src3D + (forward2 * 50.f);
+
+	ray.Init(src3D, dst3D);
+	g_EngineTrace->TraceRay(ray, 0, &filter, &trace);
+
+	if (!Math::WorldToScreen(src3D, src) || !Math::WorldToScreen(trace.endpos, dst))
+		return;
+
+	Render::Get().RenderLine(src.x, src.y, dst.x, dst.y, Color(0, 0, 255, 255));
+	Render::Get().RenderText("LBY", ImVec2(dst.x, dst.y), 14.f, Color(0, 0, 255, 255), true);
+
+	Math::AngleVectors(QAngle(0, Angle.yaw, 0), forward);
+	dst3D = src3D + (forward * 50.f);
+
+	ray.Init(src3D, dst3D);
+	g_EngineTrace->TraceRay(ray, 0, &filter, &trace);
+
+	if (!Math::WorldToScreen(src3D, src) || !Math::WorldToScreen(trace.endpos, dst))
+		return;
+
+	Render::Get().RenderLine(src.x, src.y, dst.x, dst.y, Color(0, 255, 0, 255));
+	Render::Get().RenderText("Real", ImVec2(dst.x, dst.y), 14.f, Color(0, 255, 0, 255), true);
+}
+
 void RageBot::AA(CUserCmd* cmd, bool& bSendPacket, C_BasePlayer* local)
 {
 	if (!g_Options.DeSync)
+		return;
+
+	if (local->m_nMoveType() == MOVETYPE_NOCLIP || local->m_nMoveType() == MOVETYPE_FLY || local->m_nMoveType() == MOVETYPE_LADDER)
 		return;
 
 	if (cmd->buttons & IN_ATTACK || cmd->buttons & IN_USE || cmd->buttons & IN_ATTACK2)
@@ -86,7 +130,7 @@ void RageBot::AA(CUserCmd* cmd, bool& bSendPacket, C_BasePlayer* local)
 
 	fixMoveStart(cmd);
 
-	float maxdelta = local->get_max_desync_delta() * 100;
+	float maxdelta = local->get_max_desync_delta();
 	if (g_Options.AntiAimTypeYaw == 0) {//Auto
 		float Damage;
 		int BestHitbox;
@@ -101,6 +145,7 @@ void RageBot::AA(CUserCmd* cmd, bool& bSendPacket, C_BasePlayer* local)
 		AAAngle.yaw += g_Options.DeSyncValue;
 		AAAngle.pitch = g_Options.DeSyncValue2;
 		AAAngle.Clamp();
+		AngleToDrawonScreen = AAAngle;
 		cmd->viewangles = AAAngle;
 	}
 	else if (g_Options.AntiAimTypeYaw == 1) {//legit
@@ -114,6 +159,9 @@ void RageBot::AA(CUserCmd* cmd, bool& bSendPacket, C_BasePlayer* local)
 				cmd->viewangles.Clamp();
 			}
 		}
+
+		if (cmd->sidemove != IN_MOVELEFT && cmd->sidemove != IN_MOVERIGHT)
+			return;
 
 		if (cmd->buttons & IN_DUCK) //cmd->sidemove != IN_MOVELEFT && cmd->sidemove != IN_MOVERIGHT &&
 			cmd->sidemove = cmd->tick_count % 2 ? 3.25f : -3.25f;

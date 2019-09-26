@@ -53,10 +53,10 @@ DWORD WINAPI OnDllAttach(LPVOID base)
         });
 
         Utils::ConsolePrint("Finished.\n \n");
-			//g_EngineClient->ExecuteClientCmd("clear"); //Crashes when player is on map
+		//g_EngineClient->ExecuteClientCmd("clear"); //Crashes when player is on map
 
-		g_CVar->ConsoleColorPrintf(Color(0, 255, 0, 255), "Succesfully loaded UltraWare.xyz made by CRNYY \n");
-		g_CVar->ConsoleColorPrintf(Color(0, 255, 0, 255), "Built on: %s %s Version: 0.11 \n \n", __DATE__, __TIME__);
+		g_CVar->ConsoleColorPrintf(Color(0, 255, 0, 255), "\n \n Succesfully loaded UltraWare.xyz made by CRNYY \n");
+		g_CVar->ConsoleColorPrintf(Color(0, 255, 0, 255), "Built on: %s %s Version: 0.12 \n \n", __DATE__, __TIME__);
 		g_CVar->ConsoleColorPrintf(Color(0, 190, 225, 255), "Press INSERT to open menu \n");
 		Utils::ConsolePrint("Built on: %s %s\n", __DATE__, __TIME__);
 

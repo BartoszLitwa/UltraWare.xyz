@@ -1,5 +1,5 @@
 #include "Legitbot.h"
-#include "../BackTrack.hpp"
+#include "BackTrack.hpp"
 
 LegitBot legitbot;
 

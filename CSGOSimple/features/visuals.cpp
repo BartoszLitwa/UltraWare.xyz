@@ -7,7 +7,7 @@
 #include "../helpers/utils.hpp"
 #include "../valve_sdk/Misc/Color.hpp"
 #include <vector>
-#include "../BackTrack.hpp"
+#include "BackTrack.hpp"
 
 RECT GetBBox(C_BaseEntity* ent)
 {
@@ -130,7 +130,7 @@ void Visuals::Player::RenderBackTrackTicks()
 			Vector HeadTickpos;
 			if (Math::WorldToScreen(BackTrack::records[ctx.pl->EntIndex()][Tick].origin, HeadTickpos)) {
 				HeadTickpos.y = ctx.head_pos.y;
-				Render::Get().RenderBoxFilled(HeadTickpos.x, HeadTickpos.y, HeadTickpos.x + 4, HeadTickpos.y + 4, Color(0, 255, 0, 255));
+				Render::Get().RenderBoxFilled(HeadTickpos.x, HeadTickpos.y - 10, HeadTickpos.x + 4, HeadTickpos.y - 14, Color(0, 255, 0, 255));
 			}
 		}
 }
