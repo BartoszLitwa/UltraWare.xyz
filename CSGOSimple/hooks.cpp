@@ -179,14 +179,14 @@ namespace Hooks {
 		if (Menu::Get().IsVisible())
 			cmd->buttons &= ~IN_ATTACK;
 
-		g_Variables::SendPacket = bSendPacket;
+		g_Var::SendPacket = bSendPacket;
 
 		if (bSendPacket) {
-			g_Variables::RealAngles = g_LocalPlayer->m_angEyeAngles();
+			g_Var::RealAngles = g_LocalPlayer->m_angEyeAngles();
 		}
 		else
 		{
-			g_Variables::FakeAngles = g_LocalPlayer->m_angEyeAngles();
+			g_Var::FakeAngles = g_LocalPlayer->m_angEyeAngles();
 		}
 
 		ragebot.CreateMove(cmd, bSendPacket);

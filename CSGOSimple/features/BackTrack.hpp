@@ -20,8 +20,6 @@ namespace BackTrack //https://github.com/danielkrupinski/Osiris/blob/master/Osir
 
 	float radiansToDegrees(float radians);
 
-	matrix3x4_t LocalMatrix[128];
-
 	struct Record {
 		Vector origin;
 		float simulationTime;

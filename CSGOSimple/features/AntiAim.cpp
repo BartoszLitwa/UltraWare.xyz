@@ -80,7 +80,6 @@ void AntiAim::AntiAimYaw(CUserCmd* cmd, bool& bSendPacket)
 	case 2: //Spinbot
 		if(bSendPacket)
 			ViewANG.yaw = (float)(fmod(server_time / 1.5f * 360.0f * (g_Options.AntiAim_SpinBotSpeed / 2), 360.0f));
-
 		break;
 	case 3: // Jitter
 		bSendPacket = false;

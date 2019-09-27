@@ -3,9 +3,10 @@
 #include "valve_sdk/csgostructs.hpp"
 #include "singleton.hpp"
 
-namespace g_Variables
+namespace g_Var
 {
-	bool SendPacket;
-	QAngle RealAngles;
-	QAngle FakeAngles;
+	static bool SendPacket;
+	static bool ChockedPacket;
+	static QAngle RealAngles;
+	static QAngle FakeAngles;
 };

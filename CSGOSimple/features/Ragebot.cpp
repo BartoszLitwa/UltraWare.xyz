@@ -1,6 +1,7 @@
 #include "Ragebot.hpp"
 #include "..//options.hpp"
 #include "BackTrack.hpp"
+#include "..//g_Variables.hpp"
 
 RageBot ragebot;
 
@@ -90,6 +91,8 @@ void RageBot::DrawAngles(QAngle Angle)
 	CTraceFilter filter;
 	filter.pSkip = g_LocalPlayer;
 
+	QAngle EngineAngles;
+	g_EngineClient->GetViewAngles(&EngineAngles);
 	src3D = g_LocalPlayer->GetAbsOrigin();
 
 	Math::AngleVectors(QAngle(0, g_LocalPlayer->m_flLowerBodyYawTarget(), 0), forward2);
@@ -103,6 +106,18 @@ void RageBot::DrawAngles(QAngle Angle)
 
 	Render::Get().RenderLine(src.x, src.y, dst.x, dst.y, Color(0, 0, 255, 255));
 	Render::Get().RenderText("LBY", ImVec2(dst.x, dst.y), 14.f, Color(0, 0, 255, 255), true);
+
+	Math::AngleVectors(QAngle(0, EngineAngles.yaw, 0), forward);
+	dst3D = src3D + (forward * 50.f);
+
+	ray.Init(src3D, dst3D);
+	g_EngineTrace->TraceRay(ray, 0, &filter, &trace);
+
+	if (!Math::WorldToScreen(src3D, src) || !Math::WorldToScreen(trace.endpos, dst))
+		return;
+
+	Render::Get().RenderLine(src.x, src.y, dst.x, dst.y, Color(255, 0, 0, 255));
+	Render::Get().RenderText("Engine", ImVec2(dst.x, dst.y), 14.f, Color(255, 0, 0, 255), true);
 
 	Math::AngleVectors(QAngle(0, Angle.yaw, 0), forward);
 	dst3D = src3D + (forward * 50.f);
@@ -122,15 +137,21 @@ void RageBot::AA(CUserCmd* cmd, bool& bSendPacket, C_BasePlayer* local)
 	if (!g_Options.DeSync)
 		return;
 
+	if (!g_EngineClient->IsConnected() || !g_EngineClient->IsInGame() || !g_LocalPlayer || !g_LocalPlayer->IsAlive())
+		return;
+
 	if (local->m_nMoveType() == MOVETYPE_NOCLIP || local->m_nMoveType() == MOVETYPE_FLY || local->m_nMoveType() == MOVETYPE_LADDER)
 		return;
 
-	if (cmd->buttons & IN_ATTACK || cmd->buttons & IN_USE || cmd->buttons & IN_ATTACK2)
+	if (cmd->buttons & IN_ATTACK || cmd->buttons & IN_USE || cmd->buttons & IN_ATTACK2 || local->m_hActiveWeapon()->GetCSWeaponData()->iWeaponType == WEAPONTYPE_GRENADE)
 		return;
 
 	fixMoveStart(cmd);
 
+	float server_time = g_LocalPlayer->m_nTickBase() * g_GlobalVars->interval_per_tick;
 	float maxdelta = local->get_max_desync_delta();
+	QAngle ToDraw;
+	ToDraw = cmd->viewangles;
 	if (g_Options.AntiAimTypeYaw == 0) {//Auto
 		float Damage;
 		int BestHitbox;
@@ -145,21 +166,10 @@ void RageBot::AA(CUserCmd* cmd, bool& bSendPacket, C_BasePlayer* local)
 		AAAngle.yaw += g_Options.DeSyncValue;
 		AAAngle.pitch = g_Options.DeSyncValue2;
 		AAAngle.Clamp();
-		AngleToDrawonScreen = AAAngle;
+		ToDraw = AAAngle;
 		cmd->viewangles = AAAngle;
 	}
 	else if (g_Options.AntiAimTypeYaw == 1) {//legit
-		if (LBYUpdate()) {
-			cmd->viewangles.yaw -= maxdelta;
-			cmd->viewangles.Clamp();
-		}
-		else {
-			if (cmd->tick_count % 2) {
-				cmd->viewangles.yaw += g_Options.DeSyncValue * g_Options.DeSyncValue2;
-				cmd->viewangles.Clamp();
-			}
-		}
-
 		if (cmd->sidemove != IN_MOVELEFT && cmd->sidemove != IN_MOVERIGHT)
 			return;
 
@@ -167,7 +177,43 @@ void RageBot::AA(CUserCmd* cmd, bool& bSendPacket, C_BasePlayer* local)
 			cmd->sidemove = cmd->tick_count % 2 ? 3.25f : -3.25f;
 		else
 			cmd->sidemove = cmd->tick_count % 2 ? 1.10f : -1.10f;
+
+		static int ChokedPackets = -1;
+		ChokedPackets++;
+		static bool yFlip;
+		if (ChokedPackets < 1)
+		{
+			bSendPacket = true;
+		}
+		else
+		{
+			bSendPacket = false;
+			yFlip ? AngleToDrawonScreen.yaw += 90.f : AngleToDrawonScreen.yaw -= 90.f;
+			yFlip ? cmd->viewangles.yaw += 90.f : cmd->viewangles.yaw -= 90.f;
+			ChokedPackets = -1;
+		}
+		yFlip != yFlip;
+		/*if (LBYUpdate()) {
+			cmd->viewangles.yaw -= maxdelta;
+			ToDraw.yaw -= maxdelta;
+			cmd->viewangles.Clamp();
+		}
+		else {
+			if (cmd->tick_count % 2) {
+				cmd->viewangles.yaw += g_Options.DeSyncValue * g_Options.DeSyncValue2;
+				ToDraw.yaw += g_Options.DeSyncValue * g_Options.DeSyncValue2;
+				cmd->viewangles.Clamp();
+			}
+		}*/
 	}
+	else if (g_Options.AntiAimTypeYaw == 2) {
+		if (bSendPacket) {
+			cmd->viewangles.yaw = (float)(fmod(server_time / 1.5f * 360.0f * (g_Options.AntiAim_SpinBotSpeed / 2), 360.0f));
+			cmd->viewangles.Clamp();
+			ToDraw.yaw = (float)(fmod(server_time / 1.5f * 360.0f * (g_Options.AntiAim_SpinBotSpeed / 2), 360.0f));
+		}
+	}
+	AngleToDrawonScreen = ToDraw;
 
 	fixMoveEnd(cmd);
 }
@@ -236,6 +282,7 @@ void RageBot::RageAimbot(int index, C_BasePlayer* local, C_BaseCombatWeapon* wea
 	if (!AutoWall)
 		return;
 
+	static bool CanShoot = true;
 	float Damage;
 	int BestHitbox;
 	int BestRecord;
@@ -256,6 +303,20 @@ void RageBot::RageAimbot(int index, C_BasePlayer* local, C_BaseCombatWeapon* wea
 			DamageForESP = 0;
 		return;
 		}
+	}
+
+	Vector vel = local->m_vecVelocity();
+	QAngle dir; Math::VectorAngles(vel, dir);
+	float speed = vel.Length();
+	dir.yaw = cmd->viewangles.yaw - dir.yaw;
+	Vector negated; Math::AngleVectors(dir, negated);
+	negated = negated * -speed;
+	cmd->forwardmove = -negated.x;
+	cmd->sidemove = -negated.y;
+
+	if (abs(cmd->sidemove) > 1.f && abs(cmd->forwardmove) > 1.f) {
+		CanShoot = false;
+		return;
 	}
 
 	QAngle EnemyAngle = Math::CalcAngle(local->GetEyePos(), Entity->GetHitboxPos(BestHitbox));
@@ -322,11 +383,17 @@ void RageBot::FakeLag(CUserCmd* cmd ,bool& SendPackets)
 		return;
 
 	float velocity = abs(g_LocalPlayer->m_vecVelocity().Length2D());
-	if (velocity < 1.f && g_LocalPlayer->m_fFlags() & FL_ONGROUND)
+	if (velocity < 1.f && g_LocalPlayer->m_fFlags() & FL_ONGROUND) {
+		g_Var::ChockedPacket = (NetChannel->m_nChokedPackets >= g_Options.misc_FakeLagStandingAmount);
 		SendPackets = (NetChannel->m_nChokedPackets >= g_Options.misc_FakeLagStandingAmount);
-	else if(velocity >= 1.f && g_LocalPlayer->m_fFlags() & FL_ONGROUND)
+	}
+	else if (velocity >= 1.f && g_LocalPlayer->m_fFlags() & FL_ONGROUND) {
+		g_Var::ChockedPacket = (NetChannel->m_nChokedPackets >= g_Options.misc_FakeLagStandingAmount);
 		SendPackets = (NetChannel->m_nChokedPackets >= g_Options.misc_FakeLagMovingAmount);
-	else if(!(g_LocalPlayer->m_fFlags() & FL_ONGROUND))
+	}
+	else if (!(g_LocalPlayer->m_fFlags() & FL_ONGROUND)) {
+		g_Var::ChockedPacket = (NetChannel->m_nChokedPackets >= g_Options.misc_FakeLagStandingAmount);
 		SendPackets = (NetChannel->m_nChokedPackets >= g_Options.misc_FakeLagInAirAmount);
+	}
 
 }

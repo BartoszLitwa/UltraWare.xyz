@@ -1,4 +1,6 @@
 #include "BackTrack.hpp"
+#include "Ragebot.hpp"
+#include "..//g_Variables.hpp"
 
 std::deque<BackTrack::Record> BackTrack::records[65];
 BackTrack::Cvars BackTrack::cvars;
@@ -13,7 +15,12 @@ void BackTrack::update(ClientFrameStage_t stage)
 	}
 
 	if (stage == FRAME_RENDER_START) {
-		g_LocalPlayer->SetupBones(LocalMatrix, 128, 0x7FF00, g_GlobalVars->curtime);
+		QAngle SetAngles = ragebot.AngleToDrawonScreen;
+		SetAngles.pitch = 0;
+		SetAngles.roll = 0;
+		local->SetAbsAngles(SetAngles);
+		local->InvalidateBoneCache();
+		local->SetupBones(ragebot.LocalPlayerMatrix, 128, 0x7FF00, g_GlobalVars->curtime);
 
 		for (int i = 1; i <= g_EngineClient->GetMaxClients(); i++) {
 			C_BasePlayer* entity = (C_BasePlayer*)g_EntityList->GetClientEntity(i);
@@ -28,6 +35,7 @@ void BackTrack::update(ClientFrameStage_t stage)
 			Record record{};
 			record.origin = entity->GetAbsOrigin();
 			record.simulationTime = entity->m_flSimulationTime();
+			entity->InvalidateBoneCache();
 			entity->SetupBones(record.matrix, 128, 0x7FF00, g_GlobalVars->curtime);
 			record.isVisible = local->CanSeePlayer(entity, entity->GetHitboxPos(HITBOX_CHEST));
 			if ((g_Options.AutoWall_AutoWall_Pistols || g_Options.AutoWall_AutoWall_Rifles || g_Options.AutoWall_AutoWall_SMG || g_Options.AutoWall_AutoWall_ShotGuns || g_Options.AutoWall_AutoWall_AWP || g_Options.AutoWall_AutoWall_SSG08 || g_Options.AutoWall_AutoWall_Autos)

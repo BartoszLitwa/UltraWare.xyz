@@ -5,6 +5,8 @@
 #include "../options.hpp"
 #include "../hooks.hpp"
 #include "../helpers/input.hpp"
+#include "Ragebot.hpp"
+#include "..//g_Variables.hpp"
 
 Chams::Chams()
 {
@@ -80,7 +82,7 @@ void Chams::OnDrawModelExecute(
 	bool is_player = strstr(mdl->szName, "models/player") != nullptr;
 	bool is_sleeve = strstr(mdl->szName, "sleeve") != nullptr;
 	bool is_weapon = strstr(mdl->szName, "models/weapons") != nullptr;
-	bool is_weapon_dropped = strstr(mdl->szName, "_dropped.mdl") != nullptr; //weapons/v_
+	bool is_weapon_dropped = strstr(mdl->szName, "dropped.mdl") != nullptr; //weapons/v_
 
 	if (is_player) {
 		// 
@@ -91,8 +93,8 @@ void Chams::OnDrawModelExecute(
 		if (ent && g_LocalPlayer && ent->IsAlive() ) {
 			if (ent == g_LocalPlayer) {
 				if (g_Options.DeSync) {
-					OverrideMaterial(false, false, false, true, Color(0, 255, 0, 255));
-					fnDME(g_MdlRender, 0, ctx, state, info, BackTrack::LocalMatrix);
+					OverrideMaterial(true, false, false, false, Color(0, 255, 0, 255));
+					fnDME(g_MdlRender, 0, ctx, state, info, ragebot.LocalPlayerMatrix);
 					g_MdlRender->ForcedMaterialOverride(nullptr);
 				}
 			}
@@ -138,14 +140,14 @@ void Chams::OnDrawModelExecute(
 				&& ent != g_LocalPlayer && ent->m_iTeamNum() != g_LocalPlayer->m_iTeamNum()) {
 				if (g_Options.BackTrack_Chams_LastTick) {
 					if (ent->IsAlive() && ent && !ent->IsDormant()) {
-						OverrideMaterial(false, false, false, true, g_Options.BackTrack_Chams_color);
+						OverrideMaterial(true, false, false, false, g_Options.BackTrack_Chams_color);
 						fnDME(g_MdlRender, 0, ctx, state, info, BackTrack::records[ent->EntIndex()][BackTrack::records[ent->EntIndex()].size() - 1].matrix);
 						g_MdlRender->ForcedMaterialOverride(nullptr);
 					}
 				}
 				else {
 					for (int i = 0; i < BackTrack::records[ent->EntIndex()].size(); i += 2) {
-						OverrideMaterial(false, false, false, true, g_Options.BackTrack_Chams_color);
+						OverrideMaterial(true, false, false, false, g_Options.BackTrack_Chams_color);
 						fnDME(g_MdlRender, 0, ctx, state, info, BackTrack::records[ent->EntIndex()][i].matrix);
 						g_MdlRender->ForcedMaterialOverride(nullptr);
 					}

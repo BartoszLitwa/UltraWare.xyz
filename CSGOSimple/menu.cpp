@@ -1243,6 +1243,9 @@ void Menu::Render()
 						ImGui::SliderFloat("Legit AA side", &g_Options.DeSyncValue2, -1, 1);
 						ImGui::SliderFloat("yaw", &g_Options.DeSyncValue, -180.0f, 180.0f);
 					}
+					else if (g_Options.AntiAimTypeYaw == 2) {
+						ImGui::SliderInt("Speed", &g_Options.AntiAim_SpinBotSpeed, 1, 50);
+					}
 					
 					/*ImGui::Combo("AA Yaw:", &g_Options.AntiAimTypeYaw, AATypeYaw, IM_ARRAYSIZE(AATypeYaw));
 					if (g_Options.AntiAimTypeYaw == 0) {

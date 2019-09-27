@@ -12,6 +12,7 @@ private:
 public:
 	float DamageForESP;
 	QAngle AngleToDrawonScreen;
+	matrix3x4_t LocalPlayerMatrix[128];
 	void CreateMove(CUserCmd* cmd, bool& SendPacket);
 	bool LBYUpdate();
 	void DrawAngles(QAngle Angle);
