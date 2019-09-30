@@ -77,14 +77,15 @@ bool RageBot::LBYUpdate()
 	return false;
 }
 
-void RageBot::DrawAngles(QAngle Angle)
+void RageBot::DrawAngles(QAngle Angle, float width, float height)
 {
-	if (!g_Options.DeSync || Angle.IsZero())
+	if (!g_Options.DeSync)
 		return;
 
 	if (!g_EngineClient->IsConnected() || !g_EngineClient->IsInGame() || !g_LocalPlayer || !g_LocalPlayer->IsAlive())
 		return;
 
+	float Cwidth = width / 2, Cheight = height / 2;
 	Vector src3D, dst3D, forward, forward2, src, dst;
 	trace_t trace;
 	Ray_t ray;
@@ -115,7 +116,7 @@ void RageBot::DrawAngles(QAngle Angle)
 
 	if (!Math::WorldToScreen(src3D, src) || !Math::WorldToScreen(trace.endpos, dst))
 		return;
-
+	
 	Render::Get().RenderLine(src.x, src.y, dst.x, dst.y, Color(255, 0, 0, 255));
 	Render::Get().RenderText("Engine", ImVec2(dst.x, dst.y), 14.f, Color(255, 0, 0, 255), true);
 
@@ -130,6 +131,13 @@ void RageBot::DrawAngles(QAngle Angle)
 
 	Render::Get().RenderLine(src.x, src.y, dst.x, dst.y, Color(0, 255, 0, 255));
 	Render::Get().RenderText("Real", ImVec2(dst.x, dst.y), 14.f, Color(0, 255, 0, 255), true);
+
+	if (g_Options.AntiAimTypeYaw == 1) {
+		char* Left = "Left: %s";
+		char* Right = "Right: %s";
+		Render::Get().RenderText(std::to_string(leftToDraw), ImVec2(Cwidth - 50, Cheight - 20), 18.f, Color::Green, true );
+		Render::Get().RenderText(std::to_string(rightToDraw), ImVec2(Cwidth + 50, Cheight - 20), 18.f, Color::Green, true);
+	}
 }
 
 void RageBot::AA(CUserCmd* cmd, bool& bSendPacket, C_BasePlayer* local)
@@ -150,26 +158,53 @@ void RageBot::AA(CUserCmd* cmd, bool& bSendPacket, C_BasePlayer* local)
 
 	float server_time = g_LocalPlayer->m_nTickBase() * g_GlobalVars->interval_per_tick;
 	float maxdelta = local->get_max_desync_delta();
+	Vector LocalEyes = local->GetEyePos();
 	QAngle ToDraw;
 	ToDraw = cmd->viewangles;
+	float Damage;
+	int BestHitbox;
+	int BestRecord;
+	QAngle ViewAngle = cmd->viewangles;
+	//g_EngineClient->GetViewAngles(&ViewAngle);
 	if (g_Options.AntiAimTypeYaw == 0) {//Auto
-		float Damage;
-		int BestHitbox;
-		int BestRecord;
-		QAngle ViewAngle = cmd->viewangles;
+		
 		C_BasePlayer* entity = GetBestEntity(cmd, ViewAngle, local, Damage, BestHitbox, BestRecord, true);
-		if (!entity)
-			return;
-
-		QAngle EnemyAngle = Math::CalcAngle(local->GetEyePos(), entity->GetHitboxPos(HITBOX_CHEST));
-		QAngle AAAngle = EnemyAngle;
-		AAAngle.yaw += g_Options.DeSyncValue;
-		AAAngle.pitch = g_Options.DeSyncValue2;
-		AAAngle.Clamp();
-		ToDraw = AAAngle;
-		cmd->viewangles = AAAngle;
+		if (entity) {
+			QAngle EnemyAngle = Math::CalcAngle(LocalEyes, entity->GetHitboxPos(HITBOX_CHEST));
+			QAngle AAAngle = EnemyAngle;
+			AAAngle.yaw += g_Options.DeSyncValue;
+			AAAngle.pitch = g_Options.DeSyncValue2;
+			AAAngle.Clamp();
+			ToDraw = AAAngle;
+			cmd->viewangles = AAAngle;
+		}
 	}
-	else if (g_Options.AntiAimTypeYaw == 1) {//legit
+	else if (g_Options.AntiAimTypeYaw == 1)
+	{
+		C_BasePlayer* entity = GetBestEntity(cmd, ViewAngle, local, Damage, BestHitbox, BestRecord, true);
+		if (entity) {
+			QAngle EnemyAngle = Math::CalcAngle(LocalEyes, entity->GetHitboxPos(HITBOX_CHEST));
+			QAngle AAAngle = EnemyAngle;
+			Vector Headpos = g_LocalPlayer->GetHitboxPos(HITBOX_HEAD);
+			float left = Autowall::GetDamageFromEnemy(entity, Vector(Headpos.x - 50, Headpos.y, Headpos.z));
+			float right = Autowall::GetDamageFromEnemy(entity, Vector(Headpos.x + 50, Headpos.y, Headpos.z));
+			leftToDraw = left; rightToDraw = right;
+			if (left > right) {
+				AAAngle.yaw += 90.f;
+			}
+			else if (right > left) {
+				AAAngle.yaw += -90.f;
+			}
+			else if (right == left) {
+				AAAngle.yaw += 180.f;
+			}
+			AAAngle.pitch = 89.f;
+			AAAngle.Clamp();
+			ToDraw = AAAngle;
+			cmd->viewangles = AAAngle;
+		}
+	}
+	else if (g_Options.AntiAimTypeYaw == 2) {//legit
 		if (cmd->sidemove != IN_MOVELEFT && cmd->sidemove != IN_MOVERIGHT)
 			return;
 
@@ -206,7 +241,7 @@ void RageBot::AA(CUserCmd* cmd, bool& bSendPacket, C_BasePlayer* local)
 			}
 		}*/
 	}
-	else if (g_Options.AntiAimTypeYaw == 2) {
+	else if (g_Options.AntiAimTypeYaw == 3) {
 		if (bSendPacket) {
 			cmd->viewangles.yaw = (float)(fmod(server_time / 1.5f * 360.0f * (g_Options.AntiAim_SpinBotSpeed / 2), 360.0f));
 			cmd->viewangles.Clamp();
@@ -305,7 +340,7 @@ void RageBot::RageAimbot(int index, C_BasePlayer* local, C_BaseCombatWeapon* wea
 		}
 	}
 
-	Vector vel = local->m_vecVelocity();
+	/*Vector vel = local->m_vecVelocity();
 	QAngle dir; Math::VectorAngles(vel, dir);
 	float speed = vel.Length();
 	dir.yaw = cmd->viewangles.yaw - dir.yaw;
@@ -317,14 +352,14 @@ void RageBot::RageAimbot(int index, C_BasePlayer* local, C_BaseCombatWeapon* wea
 	if (abs(cmd->sidemove) > 1.f && abs(cmd->forwardmove) > 1.f) {
 		CanShoot = false;
 		return;
-	}
+	}*/
 
 	QAngle EnemyAngle = Math::CalcAngle(local->GetEyePos(), Entity->GetHitboxPos(BestHitbox));
 	EnemyAngle -= local->m_aimPunchAngle() * 2;
 	EnemyAngle.Clamp();
 
-	if (!weapon->CanFire())
-		return;
+	/*if (!weapon->CanFire())
+		return;*/
 
 	if (AWBackTrack && BestRecord != 0) {
 		auto record = BackTrack::records[Entity->EntIndex()][BestRecord];
@@ -332,9 +367,8 @@ void RageBot::RageAimbot(int index, C_BasePlayer* local, C_BaseCombatWeapon* wea
 		cmd->tick_count = BackTrack::timeToTicks(record.simulationTime + BackTrack::getLerp());
 	}
 
-	cmd->buttons |= IN_ATTACK;
 	cmd->viewangles = EnemyAngle;
-	
+	cmd->buttons |= IN_ATTACK;
 }
 
 void RageBot::fixMoveStart(CUserCmd* cmd)

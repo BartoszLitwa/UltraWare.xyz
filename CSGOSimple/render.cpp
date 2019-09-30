@@ -78,11 +78,22 @@ void Render::BeginScene() {
 	if (g_EngineClient->IsInGame() && g_LocalPlayer && g_Options.esp_enabled)
 		Visuals::Get().AddToDrawList();
 
-	if (g_EngineClient->IsInGame() && g_LocalPlayer && (g_LocalPlayer->m_bIsScoped()) && g_Options.misc_RemoveScope) {
-		Render::Get().RenderLine(screen_w / 2, 0, screen_w / 2, screen_h, Color(15, 15, 15, 255)); //Vertical Line
-		Render::Get().RenderLine(0, screen_h / 2, screen_w, screen_h / 2, Color(15, 15, 15, 255)); //Horizontal Line
-		ConVar* postprocess = g_CVar->FindVar("mat_postprocess_enable");
-		postprocess->SetValue(0);
+	if (g_EngineClient->IsInGame() && g_LocalPlayer && g_Options.misc_RemoveScope) {
+		if (g_LocalPlayer->m_bIsScoped()) {
+			Render::Get().RenderLine(screen_w / 2, 0, screen_w / 2, screen_h, Color(15, 15, 15, 255)); //Vertical Line
+			Render::Get().RenderLine(0, screen_h / 2, screen_w, screen_h / 2, Color(15, 15, 15, 255)); //Horizontal Line
+			ConVar* postprocess = g_CVar->FindVar("mat_postprocess_enable");
+			postprocess->SetValue(0);
+		}
+		C_BasePlayer* observer = g_LocalPlayer->m_hObserverTarget();
+		if (observer) {
+			if (observer->m_bIsScoped()) {
+				Render::Get().RenderLine(screen_w / 2, 0, screen_w / 2, screen_h, Color(15, 15, 15, 255)); //Vertical Line
+				Render::Get().RenderLine(0, screen_h / 2, screen_w, screen_h / 2, Color(15, 15, 15, 255)); //Horizontal Line
+				ConVar* postprocess = g_CVar->FindVar("mat_postprocess_enable");
+				postprocess->SetValue(0);
+			}
+		}
 	}
 
 	if (g_Options.misc_SpotMarkers) {
@@ -100,7 +111,7 @@ void Render::BeginScene() {
 
 	legitbot.Render(screen_w, screen_h);
 
-	ragebot.DrawAngles(ragebot.AngleToDrawonScreen);
+	ragebot.DrawAngles(ragebot.AngleToDrawonScreen, screen_w, screen_h);
 
 	hitmarker->paint(screen_w / 2, screen_h /2);
 

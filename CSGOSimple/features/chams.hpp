@@ -19,16 +19,11 @@ class Chams
     ~Chams();
 
 public:
-	void OnDrawModelExecute(
-        IMatRenderContext* ctx,
-        const DrawModelState_t &state,
-        const ModelRenderInfo_t &pInfo,
-        matrix3x4_t *pCustomBoneToWorld);
-		void FakeAngles(QAngle Angle, IMatRenderContext* ctx, const DrawModelState_t& state, const ModelRenderInfo_t& info, matrix3x4_t* matrix);
+	void OnDrawModelExecute(IMatRenderContext* ctx,const DrawModelState_t &state, const ModelRenderInfo_t &pInfo, matrix3x4_t *pCustomBoneToWorld);
+	void BacktrackChams(IMatRenderContext* ctx, const DrawModelState_t& state, const ModelRenderInfo_t& info);
 
 private:
     void OverrideMaterial(bool ignoreZ, bool flat, bool wireframe, bool glass, const Color& rgba);
-
     IMaterial* materialRegular = nullptr;
     IMaterial* materialFlat = nullptr;
 };

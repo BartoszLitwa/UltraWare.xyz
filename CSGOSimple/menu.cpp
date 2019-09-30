@@ -140,7 +140,7 @@ void Menu::Render()
 
 	static const char* ConfigsNames[]{ "Legit", "Rage", "Custom", "Default" };
 
-	static const char* AATypeYaw[]{ "Auto", "Legit", "Spinbot", "Jitter", "SideWays", "Fake SideWays", "Static", "Fake Static", "Custom" };
+	static const char* AATypeYaw[]{ "Auto", "FreeStanding", "Legit", "Spinbot", "Jitter", "SideWays", "Fake SideWays", "Static", "Fake Static", "Custom" };
 
 	static const char* Knives[]{ "Bayonet", "Flip Knife", "Gut Knife", "Karambit", "M9 Bayonet", "Huntsman", "Falchion", "Bowie", "Butterfly", "Shaddow Daggers", "Ursus", "Navaja", "Stiletto", "Talon" };
 
@@ -162,7 +162,7 @@ void Menu::Render()
 
 	static const char* Killmsg[]{ "None", "UltraWare.xyz", "Paste", "Better Paste", "Last Place" };
 
-	static const char* Deathmsg[]{ "None", "Meme" };
+	static const char* Deathmsg[]{ "None", "UltraWare.xyz" };
 
 	static const char* Teams[]{ "CT", "T" };
 
@@ -1232,26 +1232,14 @@ void Menu::Render()
 						ImGui::SliderFloat("Yaw", &g_Options.DeSyncValue, -180, 180);
 						ImGui::SliderFloat("Pitch", &g_Options.DeSyncValue2, -89, 89);
 					}
-					else if (g_Options.AntiAimTypeYaw == 1) {
+					else if (g_Options.AntiAimTypeYaw == 2) {
 						ImGui::SliderFloat("Legit AA side", &g_Options.DeSyncValue2, -1, 1);
 						ImGui::SliderFloat("yaw", &g_Options.DeSyncValue, -180.0f, 180.0f);
 					}
-					else if (g_Options.AntiAimTypeYaw == 2) {
+					else if (g_Options.AntiAimTypeYaw == 3) {
 						ImGui::SliderInt("Speed", &g_Options.AntiAim_SpinBotSpeed, 1, 50);
 					}
-					
-					/*ImGui::Combo("AA Yaw:", &g_Options.AntiAimTypeYaw, AATypeYaw, IM_ARRAYSIZE(AATypeYaw));
-					if (g_Options.AntiAimTypeYaw == 0) {
-						ImGui::SliderInt("Legit AA side", &antiaim.LegitAASide, -1, 1);
-						ImGui::SliderFloat("AA yaw", &g_Options.DeSyncValue, -180.0f, 180.0f);
-						ImGui::SliderFloat("LBY yaw", &g_Options.DeSyncValue2, -180.0f, 180.0f);
-					}
-					if (g_Options.AntiAimTypeYaw == 1) {
-						ImGui::SliderInt("Spinbot Speed:", &g_Options.AntiAim_SpinBotSpeed, 1, 50);
-					}
-					if (g_Options.AntiAimTypeYaw == 7) {
-						ImGui::SliderFloat("AA yaw", &g_Options.DeSyncValue, -180.0f, 180.0f);
-					}*/
+				
 				}
 				ImGui::EndChild();
 			}

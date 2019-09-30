@@ -233,7 +233,7 @@ void LegitBot::RenderFOV(float width, float height, bool Aimbot ,bool ShowFov, f
 
 void LegitBot::Render(float width, float height)
 {
-	if (!g_LocalPlayer || !g_LocalPlayer->IsAlive() || !g_EngineClient->IsInGame() || !g_EngineClient->IsConnected())
+	if (!g_LocalPlayer || !g_LocalPlayer->IsAlive() || !g_EngineClient->IsInGame() || !g_EngineClient->IsConnected() || g_LocalPlayer->m_hObserverTarget() != nullptr)
 		return;
 
 	auto weapon = g_LocalPlayer->m_hActiveWeapon();

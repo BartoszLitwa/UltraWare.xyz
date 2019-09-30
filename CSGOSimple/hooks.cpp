@@ -362,7 +362,6 @@ namespace Hooks {
 	//--------------------------------------------------------------------------------
 	void __fastcall hkDrawModelExecute(void* _this, int edx, IMatRenderContext* ctx, const DrawModelState_t& state, const ModelRenderInfo_t& pInfo, matrix3x4_t* pCustomBoneToWorld)
 	{
-		try {
 			static auto ofunc = mdlrender_hook.get_original<decltype(&hkDrawModelExecute)>(index::DrawModelExecute);
 
 			if (g_MdlRender->IsForcedMaterialOverride() &&
@@ -370,6 +369,8 @@ namespace Hooks {
 				!strstr(pInfo.pModel->szName, "weapons/v_")) {
 				return ofunc(_this, edx, ctx, state, pInfo, pCustomBoneToWorld);
 			}
+
+			Chams::Get().BacktrackChams(ctx, state, pInfo);
 
 			Chams::Get().OnDrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
 
@@ -379,8 +380,6 @@ namespace Hooks {
 			ofunc(_this, edx, ctx, state, pInfo, pCustomBoneToWorld);
 
 			g_MdlRender->ForcedMaterialOverride(nullptr);
-		}
-		catch(std::exception&){}
 	}
 
 	bool __fastcall hkSvCheatsGetBool(PVOID pConVar, void* edx)

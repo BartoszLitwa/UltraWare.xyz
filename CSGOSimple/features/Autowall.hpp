@@ -16,6 +16,7 @@ namespace Autowall
 		int penetrate_count;
 	};
 	float GetDamage(const Vector& vecPoint);
+	float GetDamageFromEnemy(C_BasePlayer* Enemy, Vector point);
 	bool SimulateFireBullet(C_BaseCombatWeapon* pWeapon, FireBulletData &data);
 	bool HandleBulletPenetration(CCSWeaponInfo* weaponInfo, FireBulletData &data);
 	bool TraceToExit(Vector &end, trace_t *enter_trace, Vector start, Vector dir, trace_t *exit_trace);

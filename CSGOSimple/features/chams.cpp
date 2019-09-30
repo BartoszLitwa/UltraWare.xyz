@@ -50,22 +50,40 @@ void Chams::OverrideMaterial(bool ignoreZ, bool flat, bool wireframe, bool glass
 	g_MdlRender->ForcedMaterialOverride(material);
 }
 
-void Chams::FakeAngles(QAngle Angle, IMatRenderContext* ctx,
-	const DrawModelState_t& state,
-	const ModelRenderInfo_t& info,
-	matrix3x4_t* matrix)
-{
-	if (!g_Options.DeSync)
-		return;
-
-	if (!g_EngineClient->IsConnected() || !g_EngineClient->IsInGame() || !g_LocalPlayer || !g_LocalPlayer->IsAlive())
+void Chams::BacktrackChams(IMatRenderContext* ctx, const DrawModelState_t& state, const ModelRenderInfo_t& info) {
+	if (!g_LocalPlayer || !g_EngineClient->IsInGame() || !g_EngineClient->IsConnected() || !g_Options.BackTrack_Chams)
 		return;
 
 	static auto fnDME = Hooks::mdlrender_hook.get_original<decltype(&Hooks::hkDrawModelExecute)>(index::DrawModelExecute);
 
-	OverrideMaterial(false, false, false, true, Color(0,255,0,255));
-	fnDME(g_MdlRender, 0, ctx, state, info, matrix);
-	g_MdlRender->ForcedMaterialOverride(nullptr);
+	auto mdl = info.pModel;
+
+	bool is_player = strstr(mdl->szName, "models/player") != nullptr;
+
+	if (is_player) {
+		auto ent = C_BasePlayer::GetPlayerByIndex(info.entity_index);
+
+		if (ent && ent->IsAlive()) {
+			if (BackTrack::records[ent->EntIndex()].size() > 0 && ent != g_LocalPlayer && ent->m_iTeamNum() != g_LocalPlayer->m_iTeamNum()) {
+				if (g_Options.BackTrack_Chams_LastTick) {
+						OverrideMaterial(true, false, false, false, g_Options.BackTrack_Chams_color);
+						fnDME(g_MdlRender, 0, ctx, state, info, BackTrack::records[ent->EntIndex()][BackTrack::records[ent->EntIndex()].size() - 1].matrix);
+						g_MdlRender->ForcedMaterialOverride(nullptr);
+				}
+				else {
+					/*for (int i = 0; i < BackTrack::records[ent->EntIndex()].size(); i++) {
+						OverrideMaterial(true, false, false, false, g_Options.BackTrack_Chams_color);
+						fnDME(g_MdlRender, 0, ctx, state, info, BackTrack::records[ent->EntIndex()][i].matrix);
+					}*/
+					for (auto& rec : BackTrack::records[ent->EntIndex()]) {
+						OverrideMaterial(true, false, false, false, g_Options.BackTrack_Chams_color);
+						fnDME(g_MdlRender, 0, ctx, state, info, rec.matrix);
+						g_MdlRender->ForcedMaterialOverride(nullptr);
+					}
+				}
+			}
+		}
+	}
 }
 
 void Chams::OnDrawModelExecute(
@@ -74,6 +92,9 @@ void Chams::OnDrawModelExecute(
 	const ModelRenderInfo_t& info,
 	matrix3x4_t* matrix)
 {
+	if (!g_LocalPlayer || !g_EngineClient->IsInGame() || !g_EngineClient->IsConnected())
+		return;
+
 	static auto fnDME = Hooks::mdlrender_hook.get_original<decltype(&Hooks::hkDrawModelExecute)>(index::DrawModelExecute);
 
 	auto mdl = info.pModel;
@@ -101,24 +122,6 @@ void Chams::OnDrawModelExecute(
 
 			if (ent == g_LocalPlayer && !g_Options.chams_localplayer)
 				return;
-
-			if (g_Options.BackTrack_Chams && BackTrack::records[ent->EntIndex()].size() > 0 && g_EngineClient->IsInGame() && g_LocalPlayer && g_EngineClient->IsConnected()
-				&& ent != g_LocalPlayer && ent->m_iTeamNum() != g_LocalPlayer->m_iTeamNum()) {
-				if (g_Options.BackTrack_Chams_LastTick) {
-					if (ent->IsAlive() && ent && !ent->IsDormant()) {
-						OverrideMaterial(true, false, false, false, g_Options.BackTrack_Chams_color);
-						fnDME(g_MdlRender, 0, ctx, state, info, BackTrack::records[ent->EntIndex()][BackTrack::records[ent->EntIndex()].size() - 1].matrix);
-						g_MdlRender->ForcedMaterialOverride(nullptr);
-					}
-				}
-				else {
-					for (int i = 0; i < BackTrack::records[ent->EntIndex()].size(); i += 2) {
-						OverrideMaterial(true, false, false, false, g_Options.BackTrack_Chams_color);
-						fnDME(g_MdlRender, 0, ctx, state, info, BackTrack::records[ent->EntIndex()][i].matrix);
-						g_MdlRender->ForcedMaterialOverride(nullptr);
-					}
-				}
-			}
 
 			if (g_Options.chams_player_enabled && !ent->IsDormant()) {
 

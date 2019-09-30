@@ -183,8 +183,12 @@ bool Autowall::SimulateFireBullet(C_BaseCombatWeapon* pWeapon, FireBulletData& d
 			data.trace_length += data.enter_trace.fraction * data.trace_length_remaining;
 			data.current_damage *= powf(weaponInfo->flRangeModifier, data.trace_length * 0.002f);
 			C_BasePlayer* player = (C_BasePlayer*)data.enter_trace.hit_entity;
-			Autowall::ScaleDamage(data.enter_trace.hitgroup, player, weaponInfo->flArmorRatio, data.current_damage);
-			return true;
+			if (player->m_iTeamNum() != g_LocalPlayer->m_iTeamNum()) {
+				Autowall::ScaleDamage(data.enter_trace.hitgroup, player, weaponInfo->flArmorRatio, data.current_damage);
+				return true;
+			}
+			else
+				return false;
 		}
 		if (!HandleBulletPenetration(weaponInfo, data))
 			break;
@@ -201,6 +205,23 @@ float Autowall::GetDamage(const Vector& point)
 	data.direction = dst - data.src;
 	data.direction.NormalizeInPlace();
 	C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*)g_EntityList->GetClientEntityFromHandle(g_LocalPlayer->m_hActiveWeapon());
+	if (!activeWeapon)
+		return -1.0f;
+	if (SimulateFireBullet(activeWeapon, data))
+		damage = data.current_damage * 2;
+	return damage;
+}
+
+float Autowall::GetDamageFromEnemy(C_BasePlayer* Enemy, Vector point)
+{
+	float damage = 0.f;
+	Vector dst = point;
+	FireBulletData data;
+	data.src = Enemy->GetEyePos();
+	data.filter.pSkip = Enemy;
+	data.direction = dst - data.src;
+	data.direction.NormalizeInPlace();
+	C_BaseCombatWeapon* activeWeapon = (C_BaseCombatWeapon*)g_EntityList->GetClientEntityFromHandle(Enemy->m_hActiveWeapon());
 	if (!activeWeapon)
 		return -1.0f;
 	if (SimulateFireBullet(activeWeapon, data))
