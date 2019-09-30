@@ -13,6 +13,7 @@
 #include "features/Hitmarker.hpp"
 #include "features/LogEvents.hpp"
 #include "features/bhop.hpp"
+#include "features/Legitbot.h"
 
 ImFont* g_pDefaultFont;
 ImFont* g_pSecondFont;
@@ -74,9 +75,6 @@ void Render::BeginScene() {
 	if (g_Options.misc_watermark)
 		Render::Get().RenderText("UltraWare.xyz", 10, 5, 18.f, g_Options.color_watermark, false, true, g_pSecondFont);
 
-	//if (g_EngineClient->IsInGame() && g_LocalPlayer && g_Options.Aimbot_ShowFOV)
-		//Render::Get().RenderCircle(screen_w / 2, screen_h / 2, g_Options.Aimbot_FOV, 0, Color(255,255,255, 255));
-
 	if (g_EngineClient->IsInGame() && g_LocalPlayer && g_Options.esp_enabled)
 		Visuals::Get().AddToDrawList();
 
@@ -99,6 +97,8 @@ void Render::BeginScene() {
 		char dmg[24]; sprintf(dmg, "%.2f", ragebot.DamageForESP);
 		Render::Get().RenderText( dmg, screen_w / 2 + 10, screen_h / 2 + 10, 14, Color(255, 0, 0), false, true, g_pSecondFont);
 	}
+
+	legitbot.Render(screen_w, screen_h);
 
 	ragebot.DrawAngles(ragebot.AngleToDrawonScreen);
 

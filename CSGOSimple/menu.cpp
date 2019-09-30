@@ -543,13 +543,12 @@ void Menu::Render()
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "Aimbot");
 						ImGui::Checkbox("Aimbot", &g_Options.Aimbot_Aimbot_Pistols);
 						ImGui::Combo("Hitbox", &g_Options.Aimbot_Hitbox_Pistols, Hitboxes, IM_ARRAYSIZE(Hitboxes));
-						ImGui::SliderInt("Fov", &g_Options.Aimbot_FOV_Pistols, 0.0f, 360.0f);
-						ImGui::SameLine();
-						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_Pistols);
-						ImGui::SliderFloat("Smooth", &g_Options.Aimbot_SmoothAmount_Pistols, 0.0f, 20.0f);
+						ImGui::SliderFloat("Fov", &g_Options.Aimbot_FOV_Pistols, 0.0f, 10.f);
+						ImGui::SliderFloat("Silent Fov", &g_Options.Aimbot_SilentFOV_Pistols, 0.0f, 10.f);
+						ImGui::SliderFloat("Smooth:", &g_Options.Aimbot_SmoothAmount_Pistols, 0.0f, 10.0f);
 						ImGui::SameLine();
 						ImGui::Checkbox("Smooth", &g_Options.Aimbot_Smoothing_Pistols);
-						ImGui::Checkbox("Silent", &g_Options.Aimbot_Silent_Pistols);
+						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_Pistols);
 
 						ImGui::NewLine();
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "TriggerBot");
@@ -572,13 +571,12 @@ void Menu::Render()
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "Aimbot");
 						ImGui::Checkbox("Aimbot", &g_Options.Aimbot_Aimbot_Rifles);
 						ImGui::Combo("Hitbox", &g_Options.Aimbot_Hitbox_Rifles, Hitboxes, IM_ARRAYSIZE(Hitboxes));
-						ImGui::SliderInt("Fov", &g_Options.Aimbot_FOV_Rifles, 0.0f, 360.0f);
-						ImGui::SameLine();
-						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_Rifles);
-						ImGui::SliderFloat("Smooth", &g_Options.Aimbot_SmoothAmount_Rifles, 0.0f, 20.0f);
+						ImGui::SliderFloat("Fov", &g_Options.Aimbot_FOV_Rifles, 0.0f, 10.f);
+						ImGui::SliderFloat("Silent Fov", &g_Options.Aimbot_SilentFOV_Rifles, 0.0f, 10.f);
+						ImGui::SliderFloat("Smooth:", &g_Options.Aimbot_SmoothAmount_Rifles, 0.0f, 10.0f);
 						ImGui::SameLine();
 						ImGui::Checkbox("Smooth", &g_Options.Aimbot_Smoothing_Rifles);
-						ImGui::Checkbox("Silent", &g_Options.Aimbot_Silent_Rifles);
+						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_Rifles);
 
 						ImGui::NewLine();
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "TriggerBot");
@@ -601,13 +599,12 @@ void Menu::Render()
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "Aimbot");
 						ImGui::Checkbox("Aimbot", &g_Options.Aimbot_Aimbot_SMG);
 						ImGui::Combo("Hitbox", &g_Options.Aimbot_Hitbox_SMG, Hitboxes, IM_ARRAYSIZE(Hitboxes));
-						ImGui::SliderInt("Fov", &g_Options.Aimbot_FOV_SMG, 0.0f, 360.0f);
-						ImGui::SameLine();
-						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_SMG);
-						ImGui::SliderFloat("Smooth", &g_Options.Aimbot_SmoothAmount_SMG, 0.0f, 20.0f);
+						ImGui::SliderFloat("Fov", &g_Options.Aimbot_FOV_SMG, 0.0f, 10.f);
+						ImGui::SliderFloat("Silent Fov", &g_Options.Aimbot_SilentFOV_SMG, 0.0f, 10.f);
+						ImGui::SliderFloat("Smooth:", &g_Options.Aimbot_SmoothAmount_SMG, 0.0f, 10.0f);
 						ImGui::SameLine();
 						ImGui::Checkbox("Smooth", &g_Options.Aimbot_Smoothing_SMG);
-						ImGui::Checkbox("Silent", &g_Options.Aimbot_Silent_SMG);
+						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_SMG);
 
 						ImGui::NewLine();
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "TriggerBot");
@@ -630,13 +627,12 @@ void Menu::Render()
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "Aimbot");
 						ImGui::Checkbox("Aimbot", &g_Options.Aimbot_Aimbot_Shotguns);
 						ImGui::Combo("Hitbox", &g_Options.Aimbot_Hitbox_Shotguns, Hitboxes, IM_ARRAYSIZE(Hitboxes));
-						ImGui::SliderInt("Fov", &g_Options.Aimbot_FOV_Shotguns, 0.0f, 360.0f);
-						ImGui::SameLine();
-						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_Shotguns);
-						ImGui::SliderFloat("Smooth", &g_Options.Aimbot_SmoothAmount_Shotguns, 0.0f, 20.0f);
+						ImGui::SliderFloat("Fov", &g_Options.Aimbot_FOV_Shotguns, 0.0f, 10.f);
+						ImGui::SliderFloat("Silent Fov", &g_Options.Aimbot_SilentFOV_Shotguns, 0.0f, 10.f);
+						ImGui::SliderFloat("Smooth:", &g_Options.Aimbot_SmoothAmount_Shotguns, 0.0f, 10.0f);
 						ImGui::SameLine();
 						ImGui::Checkbox("Smooth", &g_Options.Aimbot_Smoothing_Shotguns);
-						ImGui::Checkbox("Silent", &g_Options.Aimbot_Silent_Shotguns);
+						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_Shotguns);
 
 						ImGui::NewLine();
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "TriggerBot");
@@ -659,13 +655,12 @@ void Menu::Render()
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "Aimbot");
 						ImGui::Checkbox("Aimbot", &g_Options.Aimbot_Aimbot_AWP);
 						ImGui::Combo("Hitbox", &g_Options.Aimbot_Hitbox_AWP, Hitboxes, IM_ARRAYSIZE(Hitboxes));
-						ImGui::SliderInt("Fov", &g_Options.Aimbot_FOV_AWP, 0.0f, 360.0f);
-						ImGui::SameLine();
-						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_AWP);
-						ImGui::SliderFloat("Smooth", &g_Options.Aimbot_SmoothAmount_AWP, 0.0f, 20.0f);
+						ImGui::SliderFloat("Fov", &g_Options.Aimbot_FOV_AWP, 0.0f, 10.f);
+						ImGui::SliderFloat("Silent Fov", &g_Options.Aimbot_SilentFOV_AWP, 0.0f, 10.f);
+						ImGui::SliderFloat("Smooth:", &g_Options.Aimbot_SmoothAmount_AWP, 0.0f, 10.0f);
 						ImGui::SameLine();
 						ImGui::Checkbox("Smooth", &g_Options.Aimbot_Smoothing_AWP);
-						ImGui::Checkbox("Silent", &g_Options.Aimbot_Silent_AWP);
+						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_AWP);
 
 						ImGui::NewLine();
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "TriggerBot");
@@ -688,13 +683,12 @@ void Menu::Render()
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "Aimbot");
 						ImGui::Checkbox("Aimbot", &g_Options.Aimbot_Aimbot_SSG08);
 						ImGui::Combo("Hitbox", &g_Options.Aimbot_Hitbox_SSG08, Hitboxes, IM_ARRAYSIZE(Hitboxes));
-						ImGui::SliderInt("Fov", &g_Options.Aimbot_FOV_SSG08, 0.0f, 360.0f);
-						ImGui::SameLine();
-						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_SSG08);
-						ImGui::SliderFloat("Smooth", &g_Options.Aimbot_SmoothAmount_SSG08, 0.0f, 20.0f);
+						ImGui::SliderFloat("Fov", &g_Options.Aimbot_FOV_SSG08, 0.0f, 10.f);
+						ImGui::SliderFloat("Silent Fov", &g_Options.Aimbot_SilentFOV_SSG08, 0.0f, 10.f);
+						ImGui::SliderFloat("Smooth:", &g_Options.Aimbot_SmoothAmount_SSG08, 0.0f, 10.0f);
 						ImGui::SameLine();
 						ImGui::Checkbox("Smooth", &g_Options.Aimbot_Smoothing_SSG08);
-						ImGui::Checkbox("Silent", &g_Options.Aimbot_Silent_SSG08);
+						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_SSG08);
 
 						ImGui::NewLine();
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "TriggerBot");
@@ -717,13 +711,12 @@ void Menu::Render()
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "Aimbot");
 						ImGui::Checkbox("Aimbot", &g_Options.Aimbot_Aimbot_Autos);
 						ImGui::Combo("Hitbox", &g_Options.Aimbot_Hitbox_Autos, Hitboxes, IM_ARRAYSIZE(Hitboxes));
-						ImGui::SliderInt("Fov", &g_Options.Aimbot_FOV_Autos, 0.0f, 360.0f);
-						ImGui::SameLine();
-						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_Autos);
-						ImGui::SliderFloat("Smooth", &g_Options.Aimbot_SmoothAmount_Autos, 0.0f, 20.0f);
+						ImGui::SliderFloat("Fov", &g_Options.Aimbot_FOV_Autos, 0.0f, 10.f);
+						ImGui::SliderFloat("Silent Fov", &g_Options.Aimbot_SilentFOV_Autos, 0.0f, 10.f);
+						ImGui::SliderFloat("Smooth:", &g_Options.Aimbot_SmoothAmount_Autos, 0.0f, 10.0f);
 						ImGui::SameLine();
 						ImGui::Checkbox("Smooth", &g_Options.Aimbot_Smoothing_Autos);
-						ImGui::Checkbox("Silent", &g_Options.Aimbot_Silent_Autos);
+						ImGui::Checkbox("Show FOV", &g_Options.Aimbot_ShowFOV_Autos);
 
 						ImGui::NewLine();
 						ImGui::TextColored(ImVec4(0, 255, 0, 255), "TriggerBot");

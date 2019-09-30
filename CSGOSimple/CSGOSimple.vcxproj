@@ -104,7 +104,7 @@
     <ClCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\features\Prediction.cpp" />
     <ClCompile Include="features\LogEvents.cpp" />
     <ClCompile Include="features\LogEvents.hpp" />
-    <ClCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\features\SpotMarkers.cpp" />
+    <ClCompile Include="features\SpotMarkers.cpp" />
     <ClCompile Include="features\AntiAim.cpp" />
     <ClCompile Include="features\Autowall.cpp" />
     <ClCompile Include="features\bhop.cpp" />
@@ -143,11 +143,12 @@
     <ClCompile Include="valve_sdk\netvars.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\options.hpp" />
     <ClInclude Include="features\BackTrack.hpp" />
     <ClInclude Include="features\BuyBot.hpp" />
     <ClInclude Include="features\Hitmarker.hpp" />
     <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\features\Prediction.hpp" />
-    <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\features\SpotMarkers.hpp" />
+    <ClInclude Include="features\SpotMarkers.hpp" />
     <ClInclude Include="..\..\CRNYY%27s Internal\CSGOSimple\resource.h" />
     <ClInclude Include="g_Variables.hpp" />
     <ClInclude Include="valve_sdk\interfaces\IViewRenderBeams.cpp" />

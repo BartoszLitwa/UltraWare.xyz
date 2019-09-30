@@ -100,7 +100,8 @@ public:
 		bool Aimbot_AutoStop_Pistols = true;
 		bool Aimbot_AutoCrouch_Pistols = true;
 		int Aimbot_Hitbox_Pistols = 0;
-		int Aimbot_FOV_Pistols = 100;
+		float Aimbot_FOV_Pistols = 10;
+		float Aimbot_SilentFOV_Pistols = 10;
 		bool Aimbot_ShowFOV_Pistols = true;
 		float Aimbot_SmoothAmount_Pistols = 0;
 		//
@@ -126,7 +127,8 @@ public:
 		bool Aimbot_AutoStop_Rifles = true;
 		bool Aimbot_AutoCrouch_Rifles = true;
 		int Aimbot_Hitbox_Rifles = 0;
-		int Aimbot_FOV_Rifles = 100;
+		float Aimbot_FOV_Rifles = 10;
+		float Aimbot_SilentFOV_Rifles = 10;
 		bool Aimbot_ShowFOV_Rifles = true;
 		float Aimbot_SmoothAmount_Rifles = 0;
 		//
@@ -152,7 +154,8 @@ public:
 		bool Aimbot_AutoStop_SMG = true;
 		bool Aimbot_AutoCrouch_SMG = true;
 		int Aimbot_Hitbox_SMG = 0;
-		int Aimbot_FOV_SMG = 100;
+		float Aimbot_FOV_SMG = 10;
+		float Aimbot_SilentFOV_SMG = 10;
 		bool Aimbot_ShowFOV_SMG = true;
 		float Aimbot_SmoothAmount_SMG = 0;
 		//
@@ -178,7 +181,8 @@ public:
 		bool Aimbot_AutoStop_Shotguns = true;
 		bool Aimbot_AutoCrouch_Shotguns = true;
 		int Aimbot_Hitbox_Shotguns = 0;
-		int Aimbot_FOV_Shotguns = 100;
+		float Aimbot_FOV_Shotguns = 10;
+		float Aimbot_SilentFOV_Shotguns = 10;
 		bool Aimbot_ShowFOV_Shotguns = true;
 		float Aimbot_SmoothAmount_Shotguns = 0;
 		//
@@ -204,7 +208,8 @@ public:
 		bool Aimbot_AutoStop_AWP = true;
 		bool Aimbot_AutoCrouch_AWP = true;
 		int Aimbot_Hitbox_AWP = 0;
-		int Aimbot_FOV_AWP = 100;
+		float Aimbot_FOV_AWP = 10;
+		float Aimbot_SilentFOV_AWP = 10;
 		bool Aimbot_ShowFOV_AWP = true;
 		float Aimbot_SmoothAmount_AWP = 0;
 		//
@@ -230,7 +235,8 @@ public:
 		bool Aimbot_AutoStop_SSG08 = true;
 		bool Aimbot_AutoCrouch_SSG08 = true;
 		int Aimbot_Hitbox_SSG08 = 0;
-		int Aimbot_FOV_SSG08 = 100;
+		float Aimbot_FOV_SSG08 = 10;
+		float Aimbot_SilentFOV_SSG08 = 10;
 		bool Aimbot_ShowFOV_SSG08 = true;
 		float Aimbot_SmoothAmount_SSG08 = 0;
 		//
@@ -256,7 +262,8 @@ public:
 		bool Aimbot_AutoStop_Autos = true;
 		bool Aimbot_AutoCrouch_Autos = true;
 		int Aimbot_Hitbox_Autos = 0;
-		int Aimbot_FOV_Autos = 100;
+		float Aimbot_FOV_Autos = 10;
+		float Aimbot_SilentFOV_Autos = 10;
 		bool Aimbot_ShowFOV_Autos = true;
 		float Aimbot_SmoothAmount_Autos = 0;
 		//
@@ -572,7 +579,8 @@ public:
 		WriteBool("Aimbot", "Aimbot_AutoStop_Pistols", CV.Aimbot_AutoStop_Pistols, FilePath);
 		WriteBool("Aimbot", "Aimbot_AutoCrouch_Pistols", CV.Aimbot_AutoCrouch_Pistols, FilePath);
 		WriteInt("Aimbot", "Aimbot_Hitbox_Pistols", CV.Aimbot_Hitbox_Pistols, FilePath);
-		WriteInt("Aimbot", "Aimbot_FOV_Pistols", CV.Aimbot_FOV_Pistols, FilePath);
+		WriteFloat("Aimbot", "Aimbot_FOV_Pistols", CV.Aimbot_FOV_Pistols, FilePath);
+		WriteFloat("Aimbot", "Aimbot_SilentFOV_Pistols", CV.Aimbot_SilentFOV_Pistols, FilePath);
 		WriteBool("Aimbot", "Aimbot_ShowFOV_Pistols", CV.Aimbot_ShowFOV_Pistols, FilePath);
 		WriteFloat("Aimbot", "Aimbot_SmoothAmount_Pistols", CV.Aimbot_SmoothAmount_Pistols, FilePath);
 		WriteBool("TriggerBot", "TriggerBot_TriggerBot_Pistols", CV.TriggerBot_TriggerBot_Pistols, FilePath);
@@ -593,7 +601,8 @@ public:
 		WriteBool("Aimbot", "Aimbot_AutoStop_Rifles", CV.Aimbot_AutoStop_Rifles, FilePath);
 		WriteBool("Aimbot", "Aimbot_AutoCrouch_Rifles", CV.Aimbot_AutoCrouch_Rifles, FilePath);
 		WriteInt("Aimbot", "Aimbot_Hitbox_Rifles", CV.Aimbot_Hitbox_Rifles, FilePath);
-		WriteInt("Aimbot", "Aimbot_FOV_Rifles", CV.Aimbot_FOV_Rifles, FilePath);
+		WriteFloat("Aimbot", "Aimbot_FOV_Rifles", CV.Aimbot_FOV_Rifles, FilePath);
+		WriteFloat("Aimbot", "Aimbot_SilentFOV_Rifles", CV.Aimbot_SilentFOV_Rifles, FilePath);
 		WriteBool("Aimbot", "Aimbot_ShowFOV_Rifles", CV.Aimbot_ShowFOV_Rifles, FilePath);
 		WriteFloat("Aimbot", "Aimbot_SmoothAmount_Rifles", CV.Aimbot_SmoothAmount_Rifles, FilePath);
 		WriteBool("TriggerBot", "TriggerBot_TriggerBot_Rifles", CV.TriggerBot_TriggerBot_Rifles, FilePath);
@@ -614,7 +623,8 @@ public:
 		WriteBool("Aimbot", "Aimbot_AutoStop_SMG", CV.Aimbot_AutoStop_SMG, FilePath);
 		WriteBool("Aimbot", "Aimbot_AutoCrouch_SMG", CV.Aimbot_AutoCrouch_SMG, FilePath);
 		WriteInt("Aimbot", "Aimbot_Hitbox_SMG", CV.Aimbot_Hitbox_SMG, FilePath);
-		WriteInt("Aimbot", "Aimbot_FOV_SMG", CV.Aimbot_FOV_SMG, FilePath);
+		WriteFloat("Aimbot", "Aimbot_FOV_SMG", CV.Aimbot_FOV_SMG, FilePath);
+		WriteFloat("Aimbot", "Aimbot_SilentFOV_SMG", CV.Aimbot_SilentFOV_SMG, FilePath);
 		WriteBool("Aimbot", "Aimbot_ShowFOV_SMG", CV.Aimbot_ShowFOV_SMG, FilePath);
 		WriteFloat("Aimbot", "Aimbot_SmoothAmount_SMG", CV.Aimbot_SmoothAmount_SMG, FilePath);
 		WriteBool("TriggerBot", "TriggerBot_TriggerBot_SMG", CV.TriggerBot_TriggerBot_SMG, FilePath);
@@ -635,7 +645,8 @@ public:
 		WriteBool("Aimbot", "Aimbot_AutoStop_Shotguns", CV.Aimbot_AutoStop_Shotguns, FilePath);
 		WriteBool("Aimbot", "Aimbot_AutoCrouch_Shotguns", CV.Aimbot_AutoCrouch_Shotguns, FilePath);
 		WriteInt("Aimbot", "Aimbot_Hitbox_Shotguns", CV.Aimbot_Hitbox_Shotguns, FilePath);
-		WriteInt("Aimbot", "Aimbot_FOV_Shotguns", CV.Aimbot_FOV_Shotguns, FilePath);
+		WriteFloat("Aimbot", "Aimbot_FOV_Shotguns", CV.Aimbot_FOV_Shotguns, FilePath);
+		WriteFloat("Aimbot", "Aimbot_SilentFOV_Shotguns", CV.Aimbot_SilentFOV_Shotguns, FilePath);
 		WriteBool("Aimbot", "Aimbot_ShowFOV_Shotguns", CV.Aimbot_ShowFOV_Shotguns, FilePath);
 		WriteFloat("Aimbot", "Aimbot_SmoothAmount_Shotguns", CV.Aimbot_SmoothAmount_Shotguns, FilePath);
 		WriteBool("TriggerBot", "TriggerBot_TriggerBot_Shotguns", CV.TriggerBot_TriggerBot_Shotguns, FilePath);
@@ -656,7 +667,8 @@ public:
 		WriteBool("Aimbot", "Aimbot_AutoStop_AWP", CV.Aimbot_AutoStop_AWP, FilePath);
 		WriteBool("Aimbot", "Aimbot_AutoCrouch_AWP", CV.Aimbot_AutoCrouch_AWP, FilePath);
 		WriteInt("Aimbot", "Aimbot_Hitbox_AWP", CV.Aimbot_Hitbox_AWP, FilePath);
-		WriteInt("Aimbot", "Aimbot_FOV_AWP", CV.Aimbot_FOV_AWP, FilePath);
+		WriteFloat("Aimbot", "Aimbot_FOV_AWP", CV.Aimbot_FOV_AWP, FilePath);
+		WriteFloat("Aimbot", "Aimbot_SilentFOV_AWP", CV.Aimbot_SilentFOV_AWP, FilePath);
 		WriteBool("Aimbot", "Aimbot_ShowFOV_AWP", CV.Aimbot_ShowFOV_AWP, FilePath);
 		WriteFloat("Aimbot", "Aimbot_SmoothAmount_AWP", CV.Aimbot_SmoothAmount_AWP, FilePath);
 		WriteBool("TriggerBot", "TriggerBot_TriggerBot_AWP", CV.TriggerBot_TriggerBot_AWP, FilePath);
@@ -677,7 +689,8 @@ public:
 		WriteBool("Aimbot", "Aimbot_AutoStop_SSG08", CV.Aimbot_AutoStop_SSG08, FilePath);
 		WriteBool("Aimbot", "Aimbot_AutoCrouch_SSG08", CV.Aimbot_AutoCrouch_SSG08, FilePath);
 		WriteInt("Aimbot", "Aimbot_Hitbox_SSG08", CV.Aimbot_Hitbox_SSG08, FilePath);
-		WriteInt("Aimbot", "Aimbot_FOV_SSG08", CV.Aimbot_FOV_SSG08, FilePath);
+		WriteFloat("Aimbot", "Aimbot_FOV_SSG08", CV.Aimbot_FOV_SSG08, FilePath);
+		WriteFloat("Aimbot", "Aimbot_SilentFOV_SSG08", CV.Aimbot_SilentFOV_SSG08, FilePath);
 		WriteBool("Aimbot", "Aimbot_ShowFOV_SSG08", CV.Aimbot_ShowFOV_SSG08, FilePath);
 		WriteFloat("Aimbot", "Aimbot_SmoothAmount_SSG08", CV.Aimbot_SmoothAmount_SSG08, FilePath);
 		WriteBool("TriggerBot", "TriggerBot_TriggerBot_SSG08", CV.TriggerBot_TriggerBot_SSG08, FilePath);
@@ -698,7 +711,8 @@ public:
 		WriteBool("Aimbot", "Aimbot_AutoStop_Autos", CV.Aimbot_AutoStop_Autos, FilePath);
 		WriteBool("Aimbot", "Aimbot_AutoCrouch_Autos", CV.Aimbot_AutoCrouch_Autos, FilePath);
 		WriteInt("Aimbot", "Aimbot_Hitbox_Autos", CV.Aimbot_Hitbox_Autos, FilePath);
-		WriteInt("Aimbot", "Aimbot_FOV_Autos", CV.Aimbot_FOV_Autos, FilePath);
+		WriteFloat("Aimbot", "Aimbot_FOV_Autos", CV.Aimbot_FOV_Autos, FilePath);
+		WriteFloat("Aimbot", "Aimbot_SilentFOV_Autos", CV.Aimbot_SilentFOV_Autos, FilePath);
 		WriteBool("Aimbot", "Aimbot_ShowFOV_Autos", CV.Aimbot_ShowFOV_Autos, FilePath);
 		WriteFloat("Aimbot", "Aimbot_SmoothAmount_Autos", CV.Aimbot_SmoothAmount_Autos, FilePath);
 		WriteBool("TriggerBot", "TriggerBot_TriggerBot_Autos", CV.TriggerBot_TriggerBot_Autos, FilePath);
@@ -988,7 +1002,8 @@ public:
 		ReadBool("Aimbot", "Aimbot_AutoStop_Pistols", CV.Aimbot_AutoStop_Pistols, FilePath);
 		ReadBool("Aimbot", "Aimbot_AutoCrouch_Pistols", CV.Aimbot_AutoCrouch_Pistols, FilePath);
 		ReadInt("Aimbot", "Aimbot_Hitbox_Pistols", CV.Aimbot_Hitbox_Pistols, FilePath);
-		ReadInt("Aimbot", "Aimbot_FOV_Pistols", CV.Aimbot_FOV_Pistols, FilePath);
+		ReadFloat("Aimbot", "Aimbot_FOV_Pistols", CV.Aimbot_FOV_Pistols, FilePath);
+		ReadFloat("Aimbot", "Aimbot_SilentFOV_Pistols", CV.Aimbot_SilentFOV_Pistols, FilePath);
 		ReadBool("Aimbot", "Aimbot_ShowFOV_Pistols", CV.Aimbot_ShowFOV_Pistols, FilePath);
 		ReadFloat("Aimbot", "Aimbot_SmoothAmount_Pistols", CV.Aimbot_SmoothAmount_Pistols, FilePath);
 		ReadBool("TriggerBot", "TriggerBot_TriggerBot_Pistols", CV.TriggerBot_TriggerBot_Pistols, FilePath);
@@ -1009,7 +1024,8 @@ public:
 		ReadBool("Aimbot", "Aimbot_AutoStop_Rifles", CV.Aimbot_AutoStop_Rifles, FilePath);
 		ReadBool("Aimbot", "Aimbot_AutoCrouch_Rifles", CV.Aimbot_AutoCrouch_Rifles, FilePath);
 		ReadInt("Aimbot", "Aimbot_Hitbox_Rifles", CV.Aimbot_Hitbox_Rifles, FilePath);
-		ReadInt("Aimbot", "Aimbot_FOV_Rifles", CV.Aimbot_FOV_Rifles, FilePath);
+		ReadFloat("Aimbot", "Aimbot_FOV_Rifles", CV.Aimbot_FOV_Rifles, FilePath);
+		ReadFloat("Aimbot", "Aimbot_SilentFOV_Rifles", CV.Aimbot_SilentFOV_Rifles, FilePath);
 		ReadBool("Aimbot", "Aimbot_ShowFOV_Rifles", CV.Aimbot_ShowFOV_Rifles, FilePath);
 		ReadFloat("Aimbot", "Aimbot_SmoothAmount_Rifles", CV.Aimbot_SmoothAmount_Rifles, FilePath);
 		ReadBool("TriggerBot", "TriggerBot_TriggerBot_Rifles", CV.TriggerBot_TriggerBot_Rifles, FilePath);
@@ -1030,7 +1046,8 @@ public:
 		ReadBool("Aimbot", "Aimbot_AutoStop_SMG", CV.Aimbot_AutoStop_SMG, FilePath);
 		ReadBool("Aimbot", "Aimbot_AutoCrouch_SMG", CV.Aimbot_AutoCrouch_SMG, FilePath);
 		ReadInt("Aimbot", "Aimbot_Hitbox_SMG", CV.Aimbot_Hitbox_SMG, FilePath);
-		ReadInt("Aimbot", "Aimbot_FOV_SMG", CV.Aimbot_FOV_SMG, FilePath);
+		ReadFloat("Aimbot", "Aimbot_FOV_SMG", CV.Aimbot_FOV_SMG, FilePath);
+		ReadFloat("Aimbot", "Aimbot_SilentFOV_SMG", CV.Aimbot_SilentFOV_SMG, FilePath);
 		ReadBool("Aimbot", "Aimbot_ShowFOV_SMG", CV.Aimbot_ShowFOV_SMG, FilePath);
 		ReadFloat("Aimbot", "Aimbot_SmoothAmount_SMG", CV.Aimbot_SmoothAmount_SMG, FilePath);
 		ReadBool("TriggerBot", "TriggerBot_TriggerBot_SMG", CV.TriggerBot_TriggerBot_SMG, FilePath);
@@ -1051,7 +1068,8 @@ public:
 		ReadBool("Aimbot", "Aimbot_AutoStop_Shotguns", CV.Aimbot_AutoStop_Shotguns, FilePath);
 		ReadBool("Aimbot", "Aimbot_AutoCrouch_Shotguns", CV.Aimbot_AutoCrouch_Shotguns, FilePath);
 		ReadInt("Aimbot", "Aimbot_Hitbox_Shotguns", CV.Aimbot_Hitbox_Shotguns, FilePath);
-		ReadInt("Aimbot", "Aimbot_FOV_Shotguns", CV.Aimbot_FOV_Shotguns, FilePath);
+		ReadFloat("Aimbot", "Aimbot_FOV_Shotguns", CV.Aimbot_FOV_Shotguns, FilePath);
+		ReadFloat("Aimbot", "Aimbot_SilentFOV_Shotguns", CV.Aimbot_SilentFOV_Shotguns, FilePath);
 		ReadBool("Aimbot", "Aimbot_ShowFOV_Shotguns", CV.Aimbot_ShowFOV_Shotguns, FilePath);
 		ReadFloat("Aimbot", "Aimbot_SmoothAmount_Shotguns", CV.Aimbot_SmoothAmount_Shotguns, FilePath);
 		ReadBool("TriggerBot", "TriggerBot_TriggerBot_Shotguns", CV.TriggerBot_TriggerBot_Shotguns, FilePath);
@@ -1072,7 +1090,8 @@ public:
 		ReadBool("Aimbot", "Aimbot_AutoStop_AWP", CV.Aimbot_AutoStop_AWP, FilePath);
 		ReadBool("Aimbot", "Aimbot_AutoCrouch_AWP", CV.Aimbot_AutoCrouch_AWP, FilePath);
 		ReadInt("Aimbot", "Aimbot_Hitbox_AWP", CV.Aimbot_Hitbox_AWP, FilePath);
-		ReadInt("Aimbot", "Aimbot_FOV_AWP", CV.Aimbot_FOV_AWP, FilePath);
+		ReadFloat("Aimbot", "Aimbot_FOV_AWP", CV.Aimbot_FOV_AWP, FilePath);
+		ReadFloat("Aimbot", "Aimbot_SilentFOV_AWP", CV.Aimbot_SilentFOV_AWP, FilePath);
 		ReadBool("Aimbot", "Aimbot_ShowFOV_AWP", CV.Aimbot_ShowFOV_AWP, FilePath);
 		ReadFloat("Aimbot", "Aimbot_SmoothAmount_AWP", CV.Aimbot_SmoothAmount_AWP, FilePath);
 		ReadBool("TriggerBot", "TriggerBot_TriggerBot_AWP", CV.TriggerBot_TriggerBot_AWP, FilePath);
@@ -1093,7 +1112,8 @@ public:
 		ReadBool("Aimbot", "Aimbot_AutoStop_SSG08", CV.Aimbot_AutoStop_SSG08, FilePath);
 		ReadBool("Aimbot", "Aimbot_AutoCrouch_SSG08", CV.Aimbot_AutoCrouch_SSG08, FilePath);
 		ReadInt("Aimbot", "Aimbot_Hitbox_SSG08", CV.Aimbot_Hitbox_SSG08, FilePath);
-		ReadInt("Aimbot", "Aimbot_FOV_SSG08", CV.Aimbot_FOV_SSG08, FilePath);
+		ReadFloat("Aimbot", "Aimbot_FOV_SSG08", CV.Aimbot_FOV_SSG08, FilePath);
+		ReadFloat("Aimbot", "Aimbot_SilentFOV_SSG08", CV.Aimbot_SilentFOV_SSG08, FilePath);
 		ReadBool("Aimbot", "Aimbot_ShowFOV_SSG08", CV.Aimbot_ShowFOV_SSG08, FilePath);
 		ReadFloat("Aimbot", "Aimbot_SmoothAmount_SSG08", CV.Aimbot_SmoothAmount_SSG08, FilePath);
 		ReadBool("TriggerBot", "TriggerBot_TriggerBot_SSG08", CV.TriggerBot_TriggerBot_SSG08, FilePath);
@@ -1114,7 +1134,8 @@ public:
 		ReadBool("Aimbot", "Aimbot_AutoStop_Autos", CV.Aimbot_AutoStop_Autos, FilePath);
 		ReadBool("Aimbot", "Aimbot_AutoCrouch_Autos", CV.Aimbot_AutoCrouch_Autos, FilePath);
 		ReadInt("Aimbot", "Aimbot_Hitbox_Autos", CV.Aimbot_Hitbox_Autos, FilePath);
-		ReadInt("Aimbot", "Aimbot_FOV_Autos", CV.Aimbot_FOV_Autos, FilePath);
+		ReadFloat("Aimbot", "Aimbot_FOV_Autos", CV.Aimbot_FOV_Autos, FilePath);
+		ReadFloat("Aimbot", "Aimbot_SilentFOV_Autos", CV.Aimbot_SilentFOV_Autos, FilePath);
 		ReadBool("Aimbot", "Aimbot_ShowFOV_Autos", CV.Aimbot_ShowFOV_Autos, FilePath);
 		ReadFloat("Aimbot", "Aimbot_SmoothAmount_Autos", CV.Aimbot_SmoothAmount_Autos, FilePath);
 		ReadBool("TriggerBot", "TriggerBot_TriggerBot_Autos", CV.TriggerBot_TriggerBot_Autos, FilePath);
