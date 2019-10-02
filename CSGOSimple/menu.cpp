@@ -9,8 +9,6 @@
 #include "features/AntiAim.hpp"
 #include "features/bhop.hpp"
 
-int CurrentTab = 0;
-
 namespace ImGuiEx
 {
 	bool ColorEdit4(const char* label, Color* v, bool show_alpha = true)
@@ -40,15 +38,20 @@ IDirect3DTexture9* AK472;
 IDirect3DTexture9* AK473;
 IDirect3DTexture9* AK474;
 
+std::vector<std::string> Files;
+bool SelectedConfigbool[100];
+int SelectedConfignow;
+
 void Menu::Initialize()
 {
 	//MAKEINTRESOURCE(IDB_PNG50)
 	_visible = true;
-	D3DXCreateTextureFromFileA(g_D3DDevice9, "..\iconlib\32_.png", &AK47) == D3D_OK;
-	D3DXCreateTextureFromFileA(g_D3DDevice9, "iconlib\32_.png", &AK471) == D3D_OK;
-	D3DXCreateTextureFromFileA(g_D3DDevice9, "..\..\iconlib\32_.png", &AK472) == D3D_OK;
-	D3DXCreateTextureFromFileA(g_D3DDevice9, "\32_.png", &AK473) == D3D_OK;
-	D3DXCreateTextureFromFileA(g_D3DDevice9, "iconlib\32.png", &AK474) == D3D_OK;
+	g_SaveLoadConfig.RefreshConfigs(Files);
+	//D3DXCreateTextureFromFileA(g_D3DDevice9, "..\iconlib\32_.png", &AK47) == D3D_OK;
+	//D3DXCreateTextureFromFileA(g_D3DDevice9, "iconlib\32_.png", &AK471) == D3D_OK;
+	//D3DXCreateTextureFromFileA(g_D3DDevice9, "..\..\iconlib\32_.png", &AK472) == D3D_OK;
+	//D3DXCreateTextureFromFileA(g_D3DDevice9, "\32_.png", &AK473) == D3D_OK;
+	//D3DXCreateTextureFromFileA(g_D3DDevice9, "iconlib\32.png", &AK474) == D3D_OK;
 	//D3DXCreateTextureFromFileA(g_D3DDevice9, "..\iconlib\32_.png", &AK47); //"..\iconlib\32_.png"
 }
 
@@ -69,10 +72,14 @@ void Menu::OnDeviceReset()
 	ImGui_ImplDX9_CreateDeviceObjects();
 }
 
+int CurrentTab = 0;
 int iTab;
 int AimbotTab;
 int RageTab;
 int Knifeteam;
+int kickTypeint = 0;
+char* oldName = "OldName";
+
 void color()
 {
 	ImGuiStyle& style = ImGui::GetStyle();
@@ -140,6 +147,8 @@ void Menu::Render()
 
 	static const char* ConfigsNames[]{ "Legit", "Rage", "Custom", "Default" };
 
+	static const char* Configs[] = {"Test"};
+
 	static const char* AATypeYaw[]{ "Auto", "FreeStanding", "Legit", "Spinbot", "Jitter", "SideWays", "Fake SideWays", "Static", "Fake Static", "Custom" };
 
 	static const char* Knives[]{ "Bayonet", "Flip Knife", "Gut Knife", "Karambit", "M9 Bayonet", "Huntsman", "Falchion", "Bowie", "Butterfly", "Shaddow Daggers", "Ursus", "Navaja", "Stiletto", "Talon" };
@@ -170,7 +179,13 @@ void Menu::Render()
 
 	static const char* AsusWallsType[]{ "World", "Static Props", "Both" };
 
+	static const char* FakeVoteMessageTypes[] = { "All cheaters", "Cheater Detected", "Server Shutdown"," Myself ", "Support PewDiePie", "Server Error", "Free Skin"};
+
+	static const char* FakeVoteMessage[] = { "Press F1 to kick all cheaters on the enemy team!", "A Cheater Has Been Detected, Press F1 to Kick Him.", "Server is going to be SHUTDOWN in 2 minutes, Press F1 To Stop It.", "Press F1 to kick ", "Press F1 to Support PewDiePie",
+		"Server ERROR... Press F1 to continue playing.", "Press F1 to get a free skin!"};
+
 	static int SelectedConfig = 2;
+	static int Config;
 	static int SelectedWeapon = 0;
 	static int OldKnifeCT = 0;
 	static int OldKnifeT = 0;
@@ -844,8 +859,26 @@ void Menu::Render()
 					ImGui::Combo("Asus Type", &g_Options.misc_AsusWallsInt, AsusWallsType, IM_ARRAYSIZE(AsusWallsType));
 					ImGui::SliderFloat("Alpha", &g_Options.misc_AsusWallsAlpha, 0.01f, 1.f);
 				}
-				//if (ImGui::Button("Fake VAC"))
-					//MISC::FakeCommends();
+				ImGui::Combo("Kick types", &kickTypeint, FakeVoteMessageTypes, IM_ARRAYSIZE(FakeVoteMessageTypes));
+				if (ImGui::Button("Hide Name")) {
+					player_info_s localinfo;
+					g_EngineClient->GetPlayerInfo(g_EngineClient->GetLocalPlayer(), &localinfo);
+					oldName = localinfo.szName;
+					Utils::SetName("\n\xAD\xAD\xAD");
+				}
+				ImGui::SameLine();
+				if(ImGui::Button("Restore Name"))
+					Utils::SetName(oldName);
+				if (ImGui::Button(("Votekick Troll"))) {
+					char* firstn = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+					char* secondn = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+					std::string finals;
+					if(kickTypeint != 3)
+						finals = static_cast<std::string>(firstn) + FakeVoteMessage[kickTypeint] + secondn;
+					else
+						finals = static_cast<std::string>(firstn) + FakeVoteMessage[3] + oldName + secondn;
+					Utils::SetName(finals.c_str());
+				}
 			}
 
 			if (iTab == 3) { //Skins
@@ -1100,48 +1133,55 @@ void Menu::Render()
 				ImGui::SliderFloat("Glove Wear", &g_Options.GLOVE_WEAR, 0.00001f, 1.f);
 
 				ImGui::NextColumn();
-				ImGui::ListBox("Config", &SelectedConfig, ConfigsNames, IM_ARRAYSIZE(ConfigsNames));
-				if (ImGui::Button("Save")) {
-					switch (SelectedConfig) {
-					case 0:
-						g_SaveLoadConfig.Save("Legit", g_Options);
-						break;
-					case 1:
-						g_SaveLoadConfig.Save("Rage", g_Options);
-						break;
-					case 2:
-						g_SaveLoadConfig.Save("Custom", g_Options);
-						break;
-					case 3:
-						g_SaveLoadConfig.Save("Default", g_Options);
-						break;
 
-					default:
-						g_SaveLoadConfig.Save("Default", g_Options);
-						break;
+				std::string textconfig = static_cast<std::string>("Loaded Config: ") + Files[SelectedConfignow].c_str();
+				ImGui::TextColored(ImVec4(0, 255, 0, 255), textconfig.c_str());
+				ImGui::SameLine();
+				if (ImGui::Button("Refresh")) {
+					for (int i = 0; i < 100; i++) {
+						SelectedConfigbool[i] = false;
+					}
+					g_SaveLoadConfig.RefreshConfigs(Files);
+				}
+
+				ImGui::ListBoxHeader("Configs");
+				for (int i = 0; i < Files.size(); i++) {
+					ImGui::Selectable(Files[i].c_str(), &SelectedConfigbool[i], ImGuiSelectableFlags_::ImGuiSelectableFlags_None);
+				}
+				ImGui::ListBoxFooter();
+				
+				if (ImGui::Button("Save")) {
+					for (int b = 0; b < Files.size(); b++) {
+						if (SelectedConfigbool[b])
+							SelectedConfignow = b;
+					}
+					g_SaveLoadConfig.Save(Files[SelectedConfignow].c_str(), g_Options);
+
+					for (int i = 0; i < 100; i++) {
+						SelectedConfigbool[i] = false;
 					}
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Load")) {
-					switch (SelectedConfig) {
-					case 0:
-						g_SaveLoadConfig.Load("Legit", g_Options);
-						break;
-					case 1:
-						g_SaveLoadConfig.Load("Rage", g_Options);
-						break;
-					case 2:
-						g_SaveLoadConfig.Load("Custom", g_Options);
-						break;
-					case 3:
-						g_SaveLoadConfig.Load("Default", g_Options);
-						break;
+					for (int b = 0; b < Files.size(); b++) {
+						if (SelectedConfigbool[b])
+							SelectedConfignow = b;
+					}
+					g_SaveLoadConfig.Load(Files[SelectedConfignow].c_str(), g_Options);
 
-					default:
-						g_SaveLoadConfig.Load("Default", g_Options);
-						break;
+					for (int i = 0; i < 100; i++) {
+						SelectedConfigbool[i] = false;
 					}
 				}
+				static std::string NewConfigname = "New";
+				ImGui::SameLine();
+				if (ImGui::Button("Create")) {
+					g_SaveLoadConfig.Save(NewConfigname.c_str(), g_Options);
+					g_SaveLoadConfig.RefreshConfigs(Files);
+				}
+				
+				//ImGui::InputText("Name:", NewConfigname.str(), 32);
+				ImGui::NewLine();
 				if (ImGui::Button("Unload"))
 					g_Unload = true;
 			}

@@ -1,5 +1,7 @@
 ﻿D:\Visual Studio 2019\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(437,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
 D:\Visual Studio 2019\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(438,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
-  BackTrack.cpp
-D:\Desktop\UltraWare Internal\CSGOSimple\features\BackTrack.cpp(58,54): warning C4018:  '>': signed/unsigned mismatch
+  menu.cpp
+D:\Desktop\UltraWare Internal\CSGOSimple\menu.cpp(1148,23): warning C4018:  '<': signed/unsigned mismatch
+D:\Desktop\UltraWare Internal\CSGOSimple\menu.cpp(1154,24): warning C4018:  '<': signed/unsigned mismatch
+D:\Desktop\UltraWare Internal\CSGOSimple\menu.cpp(1166,24): warning C4018:  '<': signed/unsigned mismatch
   CSGOSimple.vcxproj -> D:\Desktop\UltraWare Internal\CSGOSimple\..\bin\Debug\Internal.dll

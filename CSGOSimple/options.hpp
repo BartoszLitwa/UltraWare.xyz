@@ -6,6 +6,8 @@
 #include <vector>
 #include "valve_sdk/Misc/Color.hpp"
 
+#include <filesystem>
+
 #define A( s ) #s
 #define OPTION(type, var, val) Var<type> var = {A(var), val}
 
@@ -1446,6 +1448,20 @@ public:
 		wchar_t* wString = new wchar_t[4096];
 		MultiByteToWideChar(CP_ACP, 0, charArray, -1, wString, 4096);
 		return wString;
+	}
+
+	void RefreshConfigs(std::vector<std::string> & Files)
+	{
+		std::string path = "C:\\Cheat";
+		std::string extension = ".ini";
+		Files.clear();
+		for (auto& f : std::experimental::filesystem::recursive_directory_iterator(path))
+			if (f.path().extension() == extension)
+				if (!f.path().filename().string()._Starts_with("maps")) {
+					std::string temp = f.path().filename().string();
+					temp.erase(temp.find(".ini")); 
+					Files.push_back(temp);
+				}			
 	}
 };
 
