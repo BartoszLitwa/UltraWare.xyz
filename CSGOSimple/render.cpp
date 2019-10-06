@@ -73,25 +73,35 @@ void Render::BeginScene() {
 	g_EngineClient->GetScreenSize(screen_w, screen_h);
 
 	if (g_Options.misc_watermark)
-		Render::Get().RenderText("UltraWare.xyz", 10, 5, 18.f, g_Options.color_watermark, false, true, g_pSecondFont);
+		Render::Get().RenderText("UltraWare.xyz", 10, 5, 20.f, g_Options.color_watermark, false, true, g_pSecondFont);
 
 	if (g_EngineClient->IsInGame() && g_LocalPlayer && g_Options.esp_enabled)
 		Visuals::Get().AddToDrawList();
 
 	if (g_EngineClient->IsInGame() && g_LocalPlayer && g_Options.misc_RemoveScope) {
 		if (g_LocalPlayer->m_bIsScoped()) {
-			Render::Get().RenderLine(screen_w / 2, 0, screen_w / 2, screen_h, Color(15, 15, 15, 255)); //Vertical Line
-			Render::Get().RenderLine(0, screen_h / 2, screen_w, screen_h / 2, Color(15, 15, 15, 255)); //Horizontal Line
-			ConVar* postprocess = g_CVar->FindVar("mat_postprocess_enable");
-			postprocess->SetValue(0);
+			C_BaseCombatWeapon* gun = g_LocalPlayer->m_hActiveWeapon();
+			if (gun) {
+				if (gun->m_Item().m_iItemDefinitionIndex() != WEAPON_SG556 && gun->m_Item().m_iItemDefinitionIndex() != WEAPON_AUG) {
+					Render::Get().RenderLine(screen_w / 2, 0, screen_w / 2, screen_h, Color(15, 15, 15, 255)); //Vertical Line
+					Render::Get().RenderLine(0, screen_h / 2, screen_w, screen_h / 2, Color(15, 15, 15, 255)); //Horizontal Line
+					ConVar* postprocess = g_CVar->FindVar("mat_postprocess_enable");
+					postprocess->SetValue(0);
+				}
+			}
 		}
 		C_BasePlayer* observer = g_LocalPlayer->m_hObserverTarget();
 		if (observer) {
 			if (observer->m_bIsScoped()) {
-				Render::Get().RenderLine(screen_w / 2, 0, screen_w / 2, screen_h, Color(15, 15, 15, 255)); //Vertical Line
-				Render::Get().RenderLine(0, screen_h / 2, screen_w, screen_h / 2, Color(15, 15, 15, 255)); //Horizontal Line
-				ConVar* postprocess = g_CVar->FindVar("mat_postprocess_enable");
-				postprocess->SetValue(0);
+				C_BaseCombatWeapon* gun = observer->m_hActiveWeapon();
+				if (gun) {
+					if (gun->m_Item().m_iItemDefinitionIndex() != WEAPON_SG556 && gun->m_Item().m_iItemDefinitionIndex() != WEAPON_AUG) {
+						Render::Get().RenderLine(screen_w / 2, 0, screen_w / 2, screen_h, Color(15, 15, 15, 255)); //Vertical Line
+						Render::Get().RenderLine(0, screen_h / 2, screen_w, screen_h / 2, Color(15, 15, 15, 255)); //Horizontal Line
+						ConVar* postprocess = g_CVar->FindVar("mat_postprocess_enable");
+						postprocess->SetValue(0);
+					}
+				}
 			}
 		}
 	}

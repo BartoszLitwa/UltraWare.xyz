@@ -8,19 +8,21 @@ BackTrack::Cvars BackTrack::cvars;
 void BackTrack::update(ClientFrameStage_t stage)
 {
 	C_BasePlayer* local = (C_BasePlayer*)g_EntityList->GetClientEntity(g_EngineClient->GetLocalPlayer());
-	if (!local || !g_Options.BackTrack_BackTrack || !local->IsAlive()) {
+	if (!local || !g_Options.BackTrack_BackTrack || !local->IsAlive() || !g_EngineClient->IsInGame() || !g_EngineClient->IsConnected()) {
 		for (auto& record : records)
 			record.clear();
 		return;
 	}
 
 	if (stage == FRAME_RENDER_START) {
-		QAngle SetAngles = ragebot.AngleToDrawonScreen;
-		SetAngles.pitch = 0;
-		SetAngles.roll = 0;
-		local->SetAbsAngles(SetAngles);
-		local->InvalidateBoneCache();
-		local->SetupBones(ragebot.LocalPlayerMatrix, 128, 0x7FF00, g_GlobalVars->curtime);
+		if (g_Options.DeSync) {
+			QAngle SetAngles = ragebot.AngleToDrawonScreen;
+			SetAngles.pitch = 0;
+			SetAngles.roll = 0;
+			local->SetAbsAngles(SetAngles);
+			local->InvalidateBoneCache();
+			local->SetupBones(ragebot.LocalPlayerMatrix, 128, 0x7FF00, g_GlobalVars->curtime);
+		}
 
 		for (int i = 1; i <= g_EngineClient->GetMaxClients(); i++) {
 			C_BasePlayer* entity = (C_BasePlayer*)g_EntityList->GetClientEntity(i);
@@ -33,6 +35,7 @@ void BackTrack::update(ClientFrameStage_t stage)
 				continue;
 
 			Record record{};
+			record.player = entity;
 			record.origin = entity->GetAbsOrigin();
 			record.simulationTime = entity->m_flSimulationTime();
 			entity->InvalidateBoneCache();

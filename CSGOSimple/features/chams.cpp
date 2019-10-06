@@ -63,22 +63,27 @@ void Chams::BacktrackChams(IMatRenderContext* ctx, const DrawModelState_t& state
 	if (is_player) {
 		auto ent = C_BasePlayer::GetPlayerByIndex(info.entity_index);
 
-		if (ent && ent->IsAlive()) {
-			if (BackTrack::records[ent->EntIndex()].size() > 0 && ent != g_LocalPlayer && ent->m_iTeamNum() != g_LocalPlayer->m_iTeamNum()) {
+		if (ent && ent->IsAlive() && ent != g_LocalPlayer && ent->m_iTeamNum() != g_LocalPlayer->m_iTeamNum()) {
+			if (BackTrack::records[ent->EntIndex()].size() > 0 ) {
 				if (g_Options.BackTrack_Chams_LastTick) {
+					if (ent->IsAlive() && BackTrack::records[ent->EntIndex()][BackTrack::records[ent->EntIndex()].size() - 1].player != nullptr) {
 						OverrideMaterial(true, false, false, false, g_Options.BackTrack_Chams_color);
 						fnDME(g_MdlRender, 0, ctx, state, info, BackTrack::records[ent->EntIndex()][BackTrack::records[ent->EntIndex()].size() - 1].matrix);
 						g_MdlRender->ForcedMaterialOverride(nullptr);
+						//OverrideMaterial(false, false, false, false, g_Options.BackTrack_Chams_color);
+						//fnDME(g_MdlRender, 0, ctx, state, info, BackTrack::records[ent->EntIndex()][BackTrack::records[ent->EntIndex()].size() - 1].matrix);
+					}
+
 				}
 				else {
-					/*for (int i = 0; i < BackTrack::records[ent->EntIndex()].size(); i++) {
-						OverrideMaterial(true, false, false, false, g_Options.BackTrack_Chams_color);
-						fnDME(g_MdlRender, 0, ctx, state, info, BackTrack::records[ent->EntIndex()][i].matrix);
-					}*/
 					for (auto& rec : BackTrack::records[ent->EntIndex()]) {
-						OverrideMaterial(true, false, false, false, g_Options.BackTrack_Chams_color);
-						fnDME(g_MdlRender, 0, ctx, state, info, rec.matrix);
-						g_MdlRender->ForcedMaterialOverride(nullptr);
+						if (ent->IsAlive() && rec.player != nullptr) {
+							OverrideMaterial(true, false, false, false, g_Options.BackTrack_Chams_color);
+							fnDME(g_MdlRender, 0, ctx, state, info, rec.matrix);
+							g_MdlRender->ForcedMaterialOverride(nullptr);
+							//OverrideMaterial(false, false, false, false, g_Options.BackTrack_Chams_color);
+							//fnDME(g_MdlRender, 0, ctx, state, info, rec.matrix);
+						}
 					}
 				}
 			}
@@ -205,7 +210,7 @@ void Chams::OnDrawModelExecute(
 			}
 		}
 	}
-	else if (is_weapon || is_weapon_dropped) {
+	else if (is_weapon) {
 		auto material = g_MatSystem->FindMaterial(mdl->szName, TEXTURE_GROUP_MODEL);
 		if (!material)
 			return;
@@ -235,4 +240,8 @@ void Chams::OnDrawModelExecute(
 			}
 		}
 	}
+
+	fnDME(g_MdlRender, 0, ctx, state, info, matrix);
+
+	g_MdlRender->ForcedMaterialOverride(nullptr);
 }

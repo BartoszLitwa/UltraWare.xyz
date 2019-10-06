@@ -8,7 +8,7 @@ namespace index
 {
 	constexpr auto EmitSound1               = 5;
 	constexpr auto EmitSound2               = 6;
-	constexpr auto FireEventClientSide = 9;
+	constexpr auto FireEventClientSide		= 9;
     constexpr auto EndScene                 = 42;
     constexpr auto Reset                    = 16;
     constexpr auto PaintTraverse            = 41;
@@ -20,6 +20,7 @@ namespace index
 	constexpr auto SvCheatsGetBool          = 13;
 	constexpr auto OverrideView             = 18;
 	constexpr auto LockCursor               = 67;
+	constexpr auto ListLeavesInBox			= 6;
 }
 
 namespace Hooks
@@ -37,7 +38,7 @@ namespace Hooks
 	inline vfunc_hook clientmode_hook;
 	inline vfunc_hook sv_cheats;
 	inline vfunc_hook gameEvent_hook;
-
+	inline vfunc_hook bsp_query_hook;
 
     long __stdcall hkEndScene(IDirect3DDevice9* device);
     long __stdcall hkReset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* pPresentationParameters);
@@ -51,5 +52,6 @@ namespace Hooks
 	void __fastcall hkLockCursor(void* _this);
     int  __fastcall hkDoPostScreenEffects(void* _this, int, int a1);
 	bool __fastcall hkSvCheatsGetBool(PVOID pConVar, void* edx ); //void* pConVar, void* edx
+	int __fastcall hkListLeavesInBox(void* bsp, void* edx, Vector& mins, Vector& maxs, unsigned short* pList, int listMax);
 	//bool __fastcall hkFireEventClientSide(void* thisptr, void* edx, IGameEvent* event);
 }

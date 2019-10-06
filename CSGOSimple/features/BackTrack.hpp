@@ -21,6 +21,7 @@ namespace BackTrack //https://github.com/danielkrupinski/Osiris/blob/master/Osir
 	float radiansToDegrees(float radians);
 
 	struct Record {
+		C_BasePlayer* player;
 		Vector origin;
 		float simulationTime;
 		matrix3x4_t matrix[128];

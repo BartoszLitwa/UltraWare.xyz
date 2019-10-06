@@ -9,8 +9,10 @@ void CLogEvents::Draw(int w, int h) //https://wiki.alliedmods.net/Counter-Strike
 	if (!g_Options.misc_LogEvents)
 		return;
 
-	if (!g_EngineClient->IsConnected() || !g_EngineClient->IsInGame() || !g_LocalPlayer)
+	if (!g_EngineClient->IsConnected() || !g_EngineClient->IsInGame() || !g_LocalPlayer) {
+		Logs.clear();
 		return;
+	}
 
 	if (Logs.size() == 0)
 		return;

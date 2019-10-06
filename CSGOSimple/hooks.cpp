@@ -23,7 +23,28 @@
 
 #pragma intrinsic(_ReturnAddress)  
 
+#define MAX_COORD_FLOAT ( 16384.0f )
+#define MIN_COORD_FLOAT ( -MAX_COORD_FLOAT )
+
+struct RenderableInfo_t {
+	IClientRenderable* m_pRenderable;
+	void* m_pAlphaProperty;
+	int m_EnumCount;
+	int m_nRenderFrame;
+	unsigned short m_FirstShadow;
+	unsigned short m_LeafList;
+	short m_Area;
+	uint16_t m_Flags;   // 0x0016
+	uint16_t m_Flags2; // 0x0018
+	Vector m_vecBloatedAbsMins;
+	Vector m_vecBloatedAbsMaxs;
+	Vector m_vecAbsMins;
+	Vector m_vecAbsMaxs;
+	int pad;
+};
+
 namespace Hooks {
+	DWORD InsertIntoTreeCallListLeavesInBox;
 
 	void Initialize()
 	{
@@ -37,6 +58,7 @@ namespace Hooks {
 		ConVar* sv_cheats_con = g_CVar->FindVar("sv_cheats");
 		sv_cheats.setup(sv_cheats_con);
 		gameEvent_hook.setup(g_GameEvents);
+		bsp_query_hook.setup(g_EngineClient->GetBSPTreeQuery());
 
 		direct3d_hook.hook_index(index::EndScene, hkEndScene);
 		direct3d_hook.hook_index(index::Reset, hkReset);
@@ -49,6 +71,7 @@ namespace Hooks {
 		clientmode_hook.hook_index(index::DoPostScreenSpaceEffects, hkDoPostScreenEffects);
 		clientmode_hook.hook_index(index::OverrideView, hkOverrideView);
 		sv_cheats.hook_index(index::SvCheatsGetBool, hkSvCheatsGetBool);
+		bsp_query_hook.hook_index(index::ListLeavesInBox, hkListLeavesInBox);
 		//gameEvent_hook.hook_index(index::FireEventClientSide, hkFireEventClientSide);
 		RoundStart* g_RoundStart = new RoundStart;
 		PlayerHurt* g_PlayerHurt = new PlayerHurt;
@@ -62,6 +85,7 @@ namespace Hooks {
 		RoundEnd* g_RoundEnd = new RoundEnd;
 		//StartVote* g_StartVote = new StartVote();
 		//EnableRestartVote* g_EnableRestartVote = new EnableRestartVote();
+		InsertIntoTreeCallListLeavesInBox = (DWORD)Utils::PatternScan(GetModuleHandleW(L"client_panorama.dll"), "FF 50 18 89 44 24 14 EB") + 0x3;
 
 		if (g_EngineClient->IsInGame() && g_EngineClient->IsConnected() && g_LocalPlayer && g_LocalPlayer->IsAlive())
 			g_ClientState->ForceFullUpdate();
@@ -370,16 +394,12 @@ namespace Hooks {
 				return ofunc(_this, edx, ctx, state, pInfo, pCustomBoneToWorld);
 			}
 
-			Chams::Get().BacktrackChams(ctx, state, pInfo);
 
+			Chams::Get().BacktrackChams(ctx, state, pInfo);
 			Chams::Get().OnDrawModelExecute(ctx, state, pInfo, pCustomBoneToWorld);
 
 			MISC::NoFlash();
 			MISC::NoSmoke();
-
-			ofunc(_this, edx, ctx, state, pInfo, pCustomBoneToWorld);
-
-			g_MdlRender->ForcedMaterialOverride(nullptr);
 	}
 
 	bool __fastcall hkSvCheatsGetBool(PVOID pConVar, void* edx)
@@ -392,6 +412,42 @@ namespace Hooks {
 		if (reinterpret_cast<DWORD>(_ReturnAddress()) == reinterpret_cast<DWORD>(dwCAM_Think))
 			return true;
 		return ofunc(pConVar);
+	}
+
+	int __fastcall hkListLeavesInBox(void* bsp, void* edx, Vector& mins, Vector& maxs, unsigned short* pList, int listMax) { //https://www.unknowncheats.me/forum/counterstrike-global-offensive/330483-disable-model-occulusion.html
+		typedef int(__thiscall * ListLeavesInBox)(void*, const Vector&, const Vector&, unsigned short*, int);
+		static auto ofunc = bsp_query_hook.get_original< ListLeavesInBox >(index::ListLeavesInBox);
+
+		// occulusion getting updated on player movement/angle change,
+		// in RecomputeRenderableLeaves ( https://github.com/pmrowla/hl2sdk-csgo/blob/master/game/client/clientleafsystem.cpp#L674 );
+		// check for return in CClientLeafSystem::InsertIntoTree
+		DWORD returnadd = reinterpret_cast<DWORD>(_ReturnAddress());
+		
+		if (!g_Options.chams_player_enabled || returnadd != (DWORD)InsertIntoTreeCallListLeavesInBox) // 89 44 24 14 ( 0x14244489 ) - new / 8B 7D 08 8B ( 0x8B087D8B ) - old //Always return there
+			return ofunc(bsp, mins, maxs, pList, listMax);
+
+		DWORD ret = reinterpret_cast<DWORD>(_AddressOfReturnAddress());
+		// get current renderable info from stack ( https://github.com/pmrowla/hl2sdk-csgo/blob/master/game/client/clientleafsystem.cpp#L1470 )
+		//auto info = (RenderableInfo_t  *)(ret + 0x14);
+		auto info = *(RenderableInfo_t**)( (uintptr_t)_AddressOfReturnAddress() + 0x14 );
+		if (!info || !info->m_pRenderable)
+			return ofunc(bsp, mins, maxs, pList, listMax);
+
+		// check if disabling occulusion for players ( https://github.com/pmrowla/hl2sdk-csgo/blob/master/game/client/clientleafsystem.cpp#L1491 )
+		auto base_entity = info->m_pRenderable->GetIClientUnknown()->GetBaseEntity();
+		if (!base_entity || !base_entity->IsPlayer())
+			return ofunc(bsp, mins, maxs, pList, listMax);
+
+		// fix render order, force translucent group ( https://www.unknowncheats.me/forum/2429206-post15.html )
+		// AddRenderablesToRenderLists: https://i.imgur.com/hcg0NB5.png ( https://github.com/pmrowla/hl2sdk-csgo/blob/master/game/client/clientleafsystem.cpp#L2473 )
+		info->m_Flags &= ~0x100;
+		info->m_Flags2 |= 0xC0;
+
+		// extend world space bounds to maximum ( https://github.com/pmrowla/hl2sdk-csgo/blob/master/game/client/clientleafsystem.cpp#L707 )
+		static const Vector map_min = Vector(MIN_COORD_FLOAT, MIN_COORD_FLOAT, MIN_COORD_FLOAT);
+		static const Vector map_max = Vector(MAX_COORD_FLOAT, MAX_COORD_FLOAT, MAX_COORD_FLOAT);
+		auto count = ofunc(bsp, map_min, map_max, pList, listMax);
+		return count;
 	}
 
 	//bool __fastcall hkFireEventClientSide(void* thisptr, void* edx, IGameEvent* gameevent)
