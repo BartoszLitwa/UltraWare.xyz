@@ -25,6 +25,10 @@ static char* GlovesModels[] = { "models/weapons/v_models/arms/glove_bloodhound/v
 
 static int GloveModelsID[] = {5027, 5034,5030,5031,5032,5033,5035}; //GLOVE_CT_SIDE = 5028, GLOVE_T_SIDE = 5029
 
+static const int GloveSkinsIDs[] = { 10006 ,10007 ,10008 ,10009 ,10010 ,10013 ,10015 ,10016 ,10018 ,10019 ,10021 ,10024 ,10026 ,10027 ,10028,10030 ,10033 ,10034 ,10035
+										,10036 ,10037 ,10038, 10039, 10040 ,10041 ,10042 ,10043 ,10044 ,10045 ,10046 ,10047 ,10048 ,10049 ,10050 ,10051 ,10052 ,10053
+										,10054 ,10055 ,10056 ,10057 ,10058 ,10059 ,10060 ,10061 ,10062 ,10063 ,10064 };
+
 void SkinChanger::SetSkin(ClientFrameStage_t stage)
 {
 	if(g_EngineClient->IsInGame() || !g_EngineClient->IsConnected())
@@ -51,7 +55,7 @@ void SkinChanger::SetSkin(ClientFrameStage_t stage)
 						return;
 					}
 				}
-				else {
+				else{
 					for (ClientClass* pClass = g_CHLClient->GetAllClasses(); pClass != nullptr; pClass = pClass->m_pNext) {
 						if (pClass->m_ClassID != ClassId_CEconWearable)
 							continue;
@@ -64,17 +68,19 @@ void SkinChanger::SetSkin(ClientFrameStage_t stage)
 					}
 					C_BaseCombatWeapon* pEnt = (C_BaseCombatWeapon*)g_EntityList->GetClientEntity(hMyWearables[0] & 0xFFF);
 					if (pEnt) {
-						pEnt->m_nFallbackPaintKit() = g_Options.GLOVE_SKIN;
+						pEnt->m_nFallbackPaintKit() = GloveSkinsIDs[g_Options.GLOVE_SKIN];
 						pEnt->m_Item().m_iEntityQuality() = 4;
 						pEnt->m_nFallbackSeed() = 0;
 						pEnt->m_nFallbackStatTrak() = -1;
 						pEnt->m_flFallbackWear() = g_Options.GLOVE_WEAR;
 						pEnt->m_Item().m_iItemDefinitionIndex() = GloveModelsID[g_Options.GLOVE_MODEL];
 						pEnt->m_Item().m_iItemIDHigh() = -1;
-						//pEnt->m_nModelIndex() = g_MdlInfo->GetModelIndex("models/weapons/v_models/arms/glove_motorcycle/v_glove_motorcycle.mdl");
+						pEnt->m_nModelIndex() = g_MdlInfo->GetModelIndex(GlovesModels[g_Options.GLOVE_MODEL]);
 						pEnt->SetGloveModelIndex(g_MdlInfo->GetModelIndex(GlovesModels[g_Options.GLOVE_MODEL]));
 						pEnt->GetClientNetworkable()->PreDataUpdate(0); //0 == DATA_UPDATE_CREATED
 						pEnt->m_Item().m_iAccountID() = LocalPlayerInfo.xuid_low;
+
+						SetGlove = false;
 					}
 				}
 			}

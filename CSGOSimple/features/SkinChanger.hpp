@@ -5,6 +5,7 @@
 class SkinChanger //https://github.com/adamb70/CSGO-skin-ID-dumper/blob/master/item_index.txt
 {
 public:
+	bool SetGlove = true;
 	int SelectedKnifeCT;
 	int SelectedKnifeT;
 	bool SetForceFullUpdate;

@@ -32,16 +32,15 @@ namespace ImGuiEx
 	}
 }
 
-IDirect3DTexture9* AK47;
-IDirect3DTexture9* AK471;
-IDirect3DTexture9* AK472;
-IDirect3DTexture9* AK473;
-IDirect3DTexture9* AK474;
+//IDirect3DTexture9* AK47;
+//IDirect3DTexture9* AK471;
+//IDirect3DTexture9* AK472;
+//IDirect3DTexture9* AK473;
+//IDirect3DTexture9* AK474;
 
 std::vector<std::string> Files;
 bool SelectedConfigbool[100];
 int SelectedConfignow;
-static char* GloveSkins[];
 
 void Menu::Initialize()
 {
@@ -187,11 +186,21 @@ void Menu::Render()
 
 	static const char* GlovesModelsNames[] = { "BloodHound", "Specialist", "Sporty", "Slick", "HandWrap", "Motorcycle", "Hydra" };
 
+	static const char* GloveSKinsNames[] =
+	{ "Charred" , "Snakebite" ,"Bronzed" ,"Leather","Spruce_DDPAT","Lunar_Weave","Convoy","Crimson_Weave" ,"Superconductor" ,"Arid" ,"Slaughter" ,"Eclipse" ,"Spearmint","Boom" ,"Cool_Mint" ,"Forest_DDPAT" ,"Crimson_Kimono" ,"Emerald_Web" ,"Foundation"
+	,"Badlands" ,"Pandoras_Box" ,"Hedge_Maze" ,"Guerrilla" ,"Diamondback" ,"King_Snake" ,"Imperial_Plaid" ,"Overtake" ,"Racing_Green" ,"Amphibious" ,"Bronze_Morph" ,"Omega" ,"Vice" ,"POW" ,"Turtle" ,"Transport","Polygon" ,"Cobalt_Skulls" 
+	,"Overprint" ,"Duct_Tape" ,"Arboreal" ,"Emerald","Mangrove","Rattler","Case_Hardened" ,"Crimson_Web" ,"Buckshot" ,"Fade" ,"Mogul"
+	};
+
 	static int SelectedConfig = 2;
 	static int Config;
 	static int SelectedWeapon = 0;
 	static int OldKnifeCT = 0;
 	static int OldKnifeT = 0;
+	static bool ChangedGloves = true;
+	static int OldGloveModel;
+	static int OldGloveSkin;
+
 
 	ImGuiIO& io = ImGui::GetIO();
 	ImGuiStyle& style = ImGui::GetStyle();
@@ -1134,8 +1143,17 @@ void Menu::Render()
 				ImGui::Checkbox("GloveChanger", &g_Options.SkinChanger_GloveChanger);
 				ImGui::Combo("Glove Model", &g_Options.GLOVE_MODEL, GlovesModelsNames, IM_ARRAYSIZE(GlovesModelsNames));
 				//ImGui::InputInt("Glove Model", &g_Options.GLOVE_MODEL);
-				ImGui::InputInt("Glove Skin", &g_Options.GLOVE_SKIN);
+				ImGui::Combo("Glove Skin", &g_Options.GLOVE_SKIN, GloveSKinsNames, IM_ARRAYSIZE(GloveSKinsNames));
+				//ImGui::InputInt("Glove Skin", &g_Options.GLOVE_SKIN);
 				ImGui::SliderFloat("Glove Wear", &g_Options.GLOVE_WEAR, 0.00001f, 1.f);
+
+				if (OldGloveModel != g_Options.GLOVE_MODEL || OldGloveSkin != g_Options.GLOVE_SKIN) {
+					skinchanger.SetGlove = true;
+					skinchanger.SetForceFullUpdate = true;
+				}
+
+				OldGloveModel = g_Options.GLOVE_MODEL;
+				OldGloveSkin = g_Options.GLOVE_SKIN;
 
 				ImGui::NextColumn();
 
