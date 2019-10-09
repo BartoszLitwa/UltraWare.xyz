@@ -70,6 +70,7 @@ public:
 		//
 		bool chams_player_enabled = true;
 		bool chams_localplayer = true;
+		bool chams_Disable_Model_Occulusion = false;
 		bool chams_player_enemies_only = false;
 		bool chams_player_wireframe = false;
 		bool chams_player_flat = false;
@@ -350,8 +351,8 @@ public:
 		float KNIFE_SeedT = 1;
 
 		bool SkinChanger_GloveChanger = false;
-		int GLOVE_MODEL = 0;
-		int GLOVE_SKIN = 0;
+		int GLOVE_MODEL = 5033;
+		int GLOVE_SKIN = 1027;
 		float GLOVE_WEAR = 0.00001f;
 
 		//
@@ -553,6 +554,7 @@ public:
 
 		WriteBool("Chams", "chams_player_enabled", CV.chams_player_enabled, FilePath);
 		WriteBool("Chams", "chams_localplayer", CV.chams_localplayer, FilePath);
+		WriteBool("Chams", "chams_Disable_Model_Occulusion", CV.chams_Disable_Model_Occulusion, FilePath);
 		WriteBool("Chams", "chams_player_enemies_only", CV.chams_player_enemies_only, FilePath);
 		WriteBool("Chams", "chams_player_wireframe", CV.chams_player_wireframe, FilePath);
 		WriteBool("Chams", "chams_player_flat", CV.chams_player_flat, FilePath);
@@ -976,6 +978,7 @@ public:
 
 		ReadBool("Chams", "chams_player_enabled", CV.chams_player_enabled, FilePath);
 		ReadBool("Chams", "chams_localplayer", CV.chams_localplayer, FilePath);
+		ReadBool("Chams", "chams_Disable_Model_Occulusion", CV.chams_Disable_Model_Occulusion, FilePath);
 		ReadBool("Chams", "chams_player_enemies_only", CV.chams_player_enemies_only, FilePath);
 		ReadBool("Chams", "chams_player_wireframe", CV.chams_player_wireframe, FilePath);
 		ReadBool("Chams", "chams_player_flat", CV.chams_player_flat, FilePath);

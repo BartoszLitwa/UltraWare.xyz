@@ -421,6 +421,9 @@ namespace Hooks {
 		// occulusion getting updated on player movement/angle change,
 		// in RecomputeRenderableLeaves ( https://github.com/pmrowla/hl2sdk-csgo/blob/master/game/client/clientleafsystem.cpp#L674 );
 		// check for return in CClientLeafSystem::InsertIntoTree
+		if (!g_Options.chams_Disable_Model_Occulusion)
+			return ofunc(bsp, mins, maxs, pList, listMax);
+
 		DWORD returnadd = reinterpret_cast<DWORD>(_ReturnAddress());
 		
 		if (!g_Options.chams_player_enabled || returnadd != (DWORD)InsertIntoTreeCallListLeavesInBox) // 89 44 24 14 ( 0x14244489 ) - new / 8B 7D 08 8B ( 0x8B087D8B ) - old //Always return there

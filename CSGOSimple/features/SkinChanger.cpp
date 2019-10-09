@@ -19,19 +19,68 @@ static int iNavaja;
 static int iStilleto;
 static int iWidow;
 
+static char* GlovesModels[] = { "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound.mdl", "models/weapons/v_models/arms/glove_specialist/v_glove_specialist.mdl", "models/weapons/v_models/arms/glove_sporty/v_glove_sporty.mdl",
+					"models/weapons/v_models/arms/glove_slick/v_glove_slick.mdl", "models/weapons/v_models/arms/glove_handwrap_leathery/v_glove_handwrap_leathery.mdl", "models/weapons/v_models/arms/glove_motorcycle/v_glove_motorcycle.mdl",
+					"models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound_hydra.mdl" };
+
+static int GloveModelsID[] = {5027, 5034,5030,5031,5032,5033,5035}; //GLOVE_CT_SIDE = 5028, GLOVE_T_SIDE = 5029
+
 void SkinChanger::SetSkin(ClientFrameStage_t stage)
 {
 	if(g_EngineClient->IsInGame() || !g_EngineClient->IsConnected())
 
 	if (stage == ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START) {
 		C_BasePlayer* Local = (C_BasePlayer*)g_EntityList->GetClientEntity(g_EngineClient->GetLocalPlayer());
-		if (!Local || !Local->IsAlive())
+		if (!Local)
 			return;
 
 		int Localteam = Local->m_iTeamNum();
 
 		player_info_t LocalPlayerInfo;
 		if (!g_EngineClient->GetPlayerInfo(g_EngineClient->GetLocalPlayer(), &LocalPlayerInfo))
+			return;
+
+		if (g_Options.SkinChanger_GloveChanger) {
+			DWORD* hMyWearables = (DWORD*)Local->m_hMyWearables();
+			if (hMyWearables != NULL) {
+				if (!Local->IsAlive()) {
+					auto glove = g_EntityList->GetClientEntityFromHandle(hMyWearables[0]);
+					if (glove) {
+						glove->GetClientNetworkable()->SetDestroyedOnRecreateEntities();
+						glove->GetClientNetworkable()->Release();
+						return;
+					}
+				}
+				else {
+					for (ClientClass* pClass = g_CHLClient->GetAllClasses(); pClass != nullptr; pClass = pClass->m_pNext) {
+						if (pClass->m_ClassID != ClassId_CEconWearable)
+							continue;
+
+						int iEntry = (g_EntityList->GetHighestEntityIndex() + 1), iSerial = rand() % 4095;
+
+						pClass->m_pCreateFn(iEntry, iSerial);
+						hMyWearables[0] = iEntry | (iSerial << 16);
+						break;
+					}
+					C_BaseCombatWeapon* pEnt = (C_BaseCombatWeapon*)g_EntityList->GetClientEntity(hMyWearables[0] & 0xFFF);
+					if (pEnt) {
+						pEnt->m_nFallbackPaintKit() = g_Options.GLOVE_SKIN;
+						pEnt->m_Item().m_iEntityQuality() = 4;
+						pEnt->m_nFallbackSeed() = 0;
+						pEnt->m_nFallbackStatTrak() = -1;
+						pEnt->m_flFallbackWear() = g_Options.GLOVE_WEAR;
+						pEnt->m_Item().m_iItemDefinitionIndex() = GloveModelsID[g_Options.GLOVE_MODEL];
+						pEnt->m_Item().m_iItemIDHigh() = -1;
+						//pEnt->m_nModelIndex() = g_MdlInfo->GetModelIndex("models/weapons/v_models/arms/glove_motorcycle/v_glove_motorcycle.mdl");
+						pEnt->SetGloveModelIndex(g_MdlInfo->GetModelIndex(GlovesModels[g_Options.GLOVE_MODEL]));
+						pEnt->GetClientNetworkable()->PreDataUpdate(0); //0 == DATA_UPDATE_CREATED
+						pEnt->m_Item().m_iAccountID() = LocalPlayerInfo.xuid_low;
+					}
+				}
+			}
+		}
+
+		if (!Local->IsAlive())
 			return;
 
 		if ((Localteam == 3 && g_Options.SkinChanger_KnifeChangerCT) || (Localteam == 2 && g_Options.SkinChanger_KnifeChangerT)) {
@@ -299,58 +348,58 @@ void SkinChanger::SetSkin(ClientFrameStage_t stage)
 			}
 		}
 
-		if (g_Options.SkinChanger_GloveChanger) {
-			static bool SetGloves = false;
-			
-			auto Wearables = Local->m_hMyWearables();
+		//if (g_Options.SkinChanger_GloveChanger) {
+		//	static bool SetGloves = false;
+		//	
+		//	auto Wearables = Local->m_hMyWearables();
 
-			if (!Local->IsAlive()) {
-				auto glove = g_EntityList->GetClientEntityFromHandle(Wearables[0]);
-				if (!glove)
-					return;
+		//	if (!Local->IsAlive()) {
+		//		auto glove = g_EntityList->GetClientEntityFromHandle(Wearables[0]);
+		//		if (!glove)
+		//			return;
 
-				glove->GetClientNetworkable()->SetDestroyedOnRecreateEntities();
-				glove->GetClientNetworkable()->Release();
-				SetGloves = false;
-				return;
-			}
+		//		glove->GetClientNetworkable()->SetDestroyedOnRecreateEntities();
+		//		glove->GetClientNetworkable()->Release();
+		//		SetGloves = false;
+		//		return;
+		//	}
 
-			if (SetGloves)
-				return;
+		//	if (SetGloves)
+		//		return;
 
-			auto glov = reinterpret_cast<IClientEntity*>(g_EntityList->GetClientEntityFromHandle(Wearables[0]));
-			if (!glov) {
-				static ClientClass* Class;
-				if (!Class)
-					Class = g_CHLClient->GetAllClasses();
+		//	auto glov = reinterpret_cast<IClientEntity*>(g_EntityList->GetClientEntityFromHandle(Wearables[0]));
+		//	if (!glov) {
+		//		static ClientClass* Class;
+		//		if (!Class)
+		//			Class = g_CHLClient->GetAllClasses();
 
-				while (Class){
-					if (Class->m_ClassID == ClassId_CEconWearable)
-						break;
-					Class = Class->m_pNext;
-				}
+		//		while (Class){
+		//			if (Class->m_ClassID == ClassId_CEconWearable)
+		//				break;
+		//			Class = Class->m_pNext;
+		//		}
 
-				int iEntry, iSerial;
-				Class->m_pCreateFn(iEntry = (g_EntityList->GetHighestEntityIndex() + 1), iSerial = rand() % 4095);  //iSerial = (RandomInt(0x0, 0xFFF) 0xFFF = 4095
-				//Wearables[0] = iEntry | (iSerial << 16);
+		//		int iEntry, iSerial;
+		//		Class->m_pCreateFn(iEntry = (g_EntityList->GetHighestEntityIndex() + 1), iSerial = rand() % 4095);  //iSerial = (RandomInt(0x0, 0xFFF) 0xFFF = 4095
+		//		Wearables[0] = iEntry | (iSerial << 16); 
 
-				C_BaseAttributableItem* Ent = reinterpret_cast<C_BaseAttributableItem *>( g_EntityList->GetClientEntityFromHandle(Wearables[0]));
-				if (!Ent)
-					return;
+		//		C_BaseAttributableItem* Ent = reinterpret_cast<C_BaseAttributableItem *>( g_EntityList->GetClientEntityFromHandle(Wearables[0]));
+		//		if (!Ent)
+		//			return;
 
-				Ent->m_Item2().m_iItemDefinitionIndex() = 5033;
-				Ent->m_Item2().m_iItemIDHigh() = -1;
-				Ent->m_Item2().m_iEntityQuality() = 4;
-				Ent->m_Item2().m_iAccountID() = LocalPlayerInfo.xuid_low;
-				Ent->m_flFallbackWear() = g_Options.GLOVE_WEAR;
-				Ent->m_nFallbackSeed() = 0;
-				Ent->m_nFallbackPaintKit() = 10026;
-				Ent->SetGloveModelIndex(g_MdlInfo->GetModelIndex("models/weapons/v_models/arms/glove_motorcycle/v_glove_motorcycle.mdl"));
-				Ent->GetClientNetworkable()->PreDataUpdate(0); //0 == DATA_UPDATE_CREATED
-			}
+		//		Ent->m_Item2().m_iItemDefinitionIndex() = 5033;
+		//		Ent->m_Item2().m_iItemIDHigh() = -1;
+		//		Ent->m_Item2().m_iEntityQuality() = 4;
+		//		Ent->m_Item2().m_iAccountID() = LocalPlayerInfo.xuid_low;
+		//		Ent->m_flFallbackWear() = g_Options.GLOVE_WEAR;
+		//		Ent->m_nFallbackSeed() = 0;
+		//		Ent->m_nFallbackPaintKit() = 10027;
+		//		Ent->m_nModelIndex() = g_MdlInfo->GetModelIndex("models/weapons/v_models/arms/glove_motorcycle/v_glove_motorcycle.mdl");
+		//		Ent->GetClientNetworkable()->PreDataUpdate(0); //0 == DATA_UPDATE_CREATED
+		//	}
 
-			SetGloves = true;
-		}
+		//	SetGloves = true;
+		//}
 	}
 }
 

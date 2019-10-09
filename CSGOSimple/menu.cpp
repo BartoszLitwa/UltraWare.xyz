@@ -41,6 +41,7 @@ IDirect3DTexture9* AK474;
 std::vector<std::string> Files;
 bool SelectedConfigbool[100];
 int SelectedConfignow;
+static char* GloveSkins[];
 
 void Menu::Initialize()
 {
@@ -183,6 +184,8 @@ void Menu::Render()
 
 	static const char* FakeVoteMessage[] = { "Press F1 to kick all cheaters on the enemy team!", "A Cheater Has Been Detected, Press F1 to Kick Him.", "Server is going to be SHUTDOWN in 2 minutes, Press F1 To Stop It.", "Press F1 to kick ", "Press F1 to Support PewDiePie",
 		"Server ERROR... Press F1 to continue playing.", "Press F1 to get a free skin!"};
+
+	static const char* GlovesModelsNames[] = { "BloodHound", "Specialist", "Sporty", "Slick", "HandWrap", "Motorcycle", "Hydra" };
 
 	static int SelectedConfig = 2;
 	static int Config;
@@ -487,6 +490,7 @@ void Menu::Render()
 					ImGui::TextColored(ImVec4(0, 255, 0, 255), "Chams Players");
 					ImGui::Checkbox("Enabled Chams", &g_Options.chams_player_enabled); ImGui::SameLine();
 					ImGui::Checkbox("Chams localplayer", &g_Options.chams_localplayer);
+					ImGui::Checkbox("Disable Model Occulusion", &g_Options.chams_Disable_Model_Occulusion);
 					ImGui::Checkbox("Team Check Chams", &g_Options.chams_player_enemies_only);
 					ImGui::Checkbox("Wireframe", &g_Options.chams_player_wireframe);
 					ImGui::Checkbox("Flat", &g_Options.chams_player_flat);
@@ -1128,7 +1132,8 @@ void Menu::Render()
 				ImGui::NewLine();
 				ImGui::TextColored(ImVec4(0, 255, 0, 255), "GloveChanger");
 				ImGui::Checkbox("GloveChanger", &g_Options.SkinChanger_GloveChanger);
-				ImGui::InputInt("Glove Model", &g_Options.GLOVE_MODEL);
+				ImGui::Combo("Glove Model", &g_Options.GLOVE_MODEL, GlovesModelsNames, IM_ARRAYSIZE(GlovesModelsNames));
+				//ImGui::InputInt("Glove Model", &g_Options.GLOVE_MODEL);
 				ImGui::InputInt("Glove Skin", &g_Options.GLOVE_SKIN);
 				ImGui::SliderFloat("Glove Wear", &g_Options.GLOVE_WEAR, 0.00001f, 1.f);
 
