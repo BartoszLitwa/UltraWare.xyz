@@ -7,6 +7,11 @@
 #include "valve_sdk/Misc/Color.hpp"
 
 #include <filesystem>
+#include <filesystem>
+
+#include <fstream>
+#include <iostream>
+#include <experimental/filesystem>
 
 #define A( s ) #s
 #define OPTION(type, var, val) Var<type> var = {A(var), val}

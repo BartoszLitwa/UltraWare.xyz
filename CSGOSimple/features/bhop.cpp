@@ -35,7 +35,7 @@ void MISC::OnCreateMove(CUserCmd* cmd)
 		  return;
 
 	  if (cmd->mousedx > 1 || cmd->mousedx < -1)
-		  cmd->sidemove = cmd->mousedx > 0.f ? -400.f : 400.f;
+		  cmd->sidemove = cmd->mousedx > 0.f ? 400.f : -400.f;
   }
 }
 

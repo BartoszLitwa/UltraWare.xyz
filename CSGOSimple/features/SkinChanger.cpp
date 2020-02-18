@@ -18,12 +18,41 @@ static int iUrsus;
 static int iNavaja;
 static int iStilleto;
 static int iWidow;
+static int iSkeleton;
+static int iSurivival;
+static int iNomad;
+static int iClassic;
+static int iParacord;
 
-static char* GlovesModels[] = { "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound.mdl", "models/weapons/v_models/arms/glove_specialist/v_glove_specialist.mdl", "models/weapons/v_models/arms/glove_sporty/v_glove_sporty.mdl",
-					"models/weapons/v_models/arms/glove_slick/v_glove_slick.mdl", "models/weapons/v_models/arms/glove_handwrap_leathery/v_glove_handwrap_leathery.mdl", "models/weapons/v_models/arms/glove_motorcycle/v_glove_motorcycle.mdl",
-					"models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound_hydra.mdl" };
+static const char* GlovesModels[] = { "models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound.mdl",
+								"models/weapons/v_models/arms/glove_specialist/v_glove_specialist.mdl",
+								"models/weapons/v_models/arms/glove_sporty/v_glove_sporty.mdl",
+								"models/weapons/v_models/arms/glove_slick/v_glove_slick.mdl",
+								"models/weapons/v_models/arms/glove_handwrap_leathery/v_glove_handwrap_leathery.mdl",
+								"models/weapons/v_models/arms/glove_motorcycle/v_glove_motorcycle.mdl",
+								"models/weapons/v_models/arms/glove_bloodhound/v_glove_bloodhound_hydra.mdl" };
 
-static int GloveModelsID[] = {5027, 5034,5030,5031,5032,5033,5035}; //GLOVE_CT_SIDE = 5028, GLOVE_T_SIDE = 5029
+static const char* KnifeModels[] = {	"models/weapons/v_knife_bayonet.mdl",
+								"models/weapons/v_knife_flip.mdl",
+								"models/weapons/v_knife_gut.mdl",
+								"models/weapons/v_knife_karam.mdl",
+								"models/weapons/v_knife_m9_bay.mdl",
+								"models/weapons/v_knife_tactical.mdl",
+								"models/weapons/v_knife_falchion_advanced.mdl",
+								"models/weapons/v_knife_survival_bowie.mdl",
+								"models/weapons/v_knife_butterfly.mdl",
+								"models/weapons/v_knife_push.mdl",
+								"models/weapons/v_knife_ursus.mdl",
+								"models/weapons/v_knife_gypsy_jackknife.mdl",
+								"models/weapons/v_knife_stiletto.mdl",
+								"models/weapons/v_knife_widowmaker.mdl",
+								"models/weapons/v_knife_skeleton.mdl",
+								"models/weapons/v_knife_outdoor.mdl",
+								"models/weapons/v_knife_canis.mdl",
+								"models/weapons/v_knife_css.mdl",
+								"models/weapons/v_knife_cord.mdl" };
+
+static const int GloveModelsID[] = {5027, 5034,5030,5031,5032,5033,5035}; //GLOVE_CT_SIDE = 5028, GLOVE_T_SIDE = 5029
 
 static const int GloveSkinsIDs[] = { 10006 ,10007 ,10008 ,10009 ,10010 ,10013 ,10015 ,10016 ,10018 ,10019 ,10021 ,10024 ,10026 ,10027 ,10028,10030 ,10033 ,10034 ,10035
 										,10036 ,10037 ,10038, 10039, 10040 ,10041 ,10042 ,10043 ,10044 ,10045 ,10046 ,10047 ,10048 ,10049 ,10050 ,10051 ,10052 ,10053
@@ -31,7 +60,8 @@ static const int GloveSkinsIDs[] = { 10006 ,10007 ,10008 ,10009 ,10010 ,10013 ,1
 
 void SkinChanger::SetSkin(ClientFrameStage_t stage)
 {
-	if(g_EngineClient->IsInGame() || !g_EngineClient->IsConnected())
+	if (!g_EngineClient->IsInGame() || !g_EngineClient->IsConnected())
+		return;
 
 	if (stage == ClientFrameStage_t::FRAME_NET_UPDATE_POSTDATAUPDATE_START) {
 		C_BasePlayer* Local = (C_BasePlayer*)g_EntityList->GetClientEntity(g_EngineClient->GetLocalPlayer());
@@ -52,10 +82,10 @@ void SkinChanger::SetSkin(ClientFrameStage_t stage)
 					if (glove) {
 						glove->GetClientNetworkable()->SetDestroyedOnRecreateEntities();
 						glove->GetClientNetworkable()->Release();
-						return;
+						//return;
 					}
 				}
-				else{
+				else if(!SetGlove){
 					for (ClientClass* pClass = g_CHLClient->GetAllClasses(); pClass != nullptr; pClass = pClass->m_pNext) {
 						if (pClass->m_ClassID != ClassId_CEconWearable)
 							continue;
@@ -90,30 +120,32 @@ void SkinChanger::SetSkin(ClientFrameStage_t stage)
 			return;
 
 		if ((Localteam == 3 && g_Options.SkinChanger_KnifeChangerCT) || (Localteam == 2 && g_Options.SkinChanger_KnifeChangerT)) {
+
 			C_BaseCombatWeapon* gun = Local->m_hActiveWeapon();
 			if (!gun)
 				return;
 
-			iBay = g_MdlInfo->GetModelIndex("models/weapons/v_knife_bayonet.mdl");
-			iFlip = g_MdlInfo->GetModelIndex("models/weapons/v_knife_flip.mdl");
-			iGut = g_MdlInfo->GetModelIndex("models/weapons/v_knife_gut.mdl");
-			iKarambit = g_MdlInfo->GetModelIndex("models/weapons/v_knife_karam.mdl");
-			iM9Bay = g_MdlInfo->GetModelIndex("models/weapons/v_knife_m9_bay.mdl");
-			iHuntsman = g_MdlInfo->GetModelIndex("models/weapons/v_knife_tactical.mdl");
-			iFalchion = g_MdlInfo->GetModelIndex("models/weapons/v_knife_falchion_advanced.mdl");
-			iBowie = g_MdlInfo->GetModelIndex("models/weapons/v_knife_survival_bowie.mdl");
-			iButterfly = g_MdlInfo->GetModelIndex("models/weapons/v_knife_butterfly.mdl");
-			iShadow = g_MdlInfo->GetModelIndex("models/weapons/v_knife_push.mdl");
-			iUrsus = g_MdlInfo->GetModelIndex("models/weapons/v_knife_ursus.mdl");
-			iNavaja = g_MdlInfo->GetModelIndex("models/weapons/v_knife_gypsy_jackknife.mdl");
-			iStilleto = g_MdlInfo->GetModelIndex("models/weapons/v_knife_stiletto.mdl");
-			iWidow = g_MdlInfo->GetModelIndex("models/weapons/v_knife_widowmaker.mdl");
+			iBay = g_MdlInfo->GetModelIndex(KnifeModels[0]);
+			iFlip = g_MdlInfo->GetModelIndex(KnifeModels[1]);
+			iGut = g_MdlInfo->GetModelIndex(KnifeModels[2]);
+			iKarambit = g_MdlInfo->GetModelIndex(KnifeModels[3]);
+			iM9Bay = g_MdlInfo->GetModelIndex(KnifeModels[4]);
+			iHuntsman = g_MdlInfo->GetModelIndex(KnifeModels[5]);
+			iFalchion = g_MdlInfo->GetModelIndex(KnifeModels[6]);
+			iBowie = g_MdlInfo->GetModelIndex(KnifeModels[7]);
+			iButterfly = g_MdlInfo->GetModelIndex(KnifeModels[8]);
+			iShadow = g_MdlInfo->GetModelIndex(KnifeModels[9]);
+			iUrsus = g_MdlInfo->GetModelIndex(KnifeModels[10]);
+			iNavaja = g_MdlInfo->GetModelIndex(KnifeModels[11]);
+			iStilleto = g_MdlInfo->GetModelIndex(KnifeModels[12]);
+			iWidow = g_MdlInfo->GetModelIndex(KnifeModels[13]);
+			iSkeleton = g_MdlInfo->GetModelIndex(KnifeModels[14]);
+			iSurivival = g_MdlInfo->GetModelIndex(KnifeModels[16]);
+			iNomad = g_MdlInfo->GetModelIndex(KnifeModels[15]);
+			iClassic = g_MdlInfo->GetModelIndex(KnifeModels[17]);
+			iParacord = g_MdlInfo->GetModelIndex(KnifeModels[18]);
 
 			short weaponindex = gun->m_Item().m_iItemDefinitionIndex();
-
-			//auto viemodel = Local->m_hViewModel().Get();
-			//int Sequence = Local->m_nSequence();
-			//int originalactivity = Local->GetSequenceActivity(Sequence);
 
 			int knife = Localteam == 3 ? g_Options.WEAPON_KNIFECT : g_Options.WEAPON_KNIFET;
 			if (knife == 0)
@@ -121,9 +153,9 @@ void SkinChanger::SetSkin(ClientFrameStage_t stage)
 
 			switch (knife)
 			{
-			case WEAPON_BAYONET: //Bayonet
+			case WEAPON_KNIFE_BAYONET: //Bayonet
 				iModel = iBay;
-				iKnife = WEAPON_BAYONET;
+				iKnife = WEAPON_KNIFE_BAYONET;
 				break;
 			case WEAPON_KNIFE_FLIP: //Flip Knife
 				iModel = iFlip;
@@ -177,9 +209,33 @@ void SkinChanger::SetSkin(ClientFrameStage_t stage)
 				iModel = iWidow;
 				iKnife = WEAPON_KNIFE_WIDOWMAKER;
 				break;
+			case WEAPON_KNIFE_SKELETON: //Skeleton
+				iModel = iSkeleton;
+				iKnife = WEAPON_KNIFE_SKELETON;
+				break;
+			case WEAPON_KNIFE_NOMAD: //Nomad
+				iModel = iNomad;
+				iKnife = WEAPON_KNIFE_NOMAD;
+				break;
+			case WEAPON_KNIFE_SURVIVAL: //Survival
+				iModel = iSurivival;
+				iKnife = WEAPON_KNIFE_SURVIVAL;
+				break;
+			case WEAPON_KNIFE_CLASSIC: //Classic
+				iModel = iClassic;
+				iKnife = WEAPON_KNIFE_CLASSIC;
+				break;
+			case WEAPON_KNIFE_PARACORD: //Paracord
+				iModel = iParacord;
+				iKnife = WEAPON_KNIFE_PARACORD;
+				break;
 			default:
 				break;
 			}
+
+			auto viemodel = Local->m_hViewModel();
+			int Sequence = (int)Local->m_nSequence();
+			int originalActivity = viemodel->GetSequenceActivity(Sequence);
 
 			if (gun->IsKnife()) {
 				gun->m_Item().m_iItemIDHigh() = -1;
@@ -189,30 +245,33 @@ void SkinChanger::SetSkin(ClientFrameStage_t stage)
 				gun->m_Item().m_iItemDefinitionIndex() = iKnife;
 			}
 
-			//int newActivity = 1;
-			//int num = 0;
-			//for (size_t i = 0; i < 20; i++) // compare activity with original activity and save new activity // havent seen a sequence above 14 but using 20 if theres is
-			//{
-			//	int tempactivity = Local->GetSequenceActivity(i);
-			//	if (originalactivity != -1 && originalactivity == tempactivity || originalactivity == -1 && tempactivity == 213) {
-			//		newActivity = i;
-			//		for (size_t t = 0; t < 4; t++)
-			//		{
-			//			if (Local->GetSequenceActivity(i + t) == tempactivity)
-			//				num++;
-			//		}
-			//		break;
-			//	}
+			//if (SetForceFullUpdate) {
+				//int newActivity = 1;
+				//int num = 0;
+				//for (size_t i = 0; i < 20; i++) {
+				//	int tempActitivity = viemodel->GetSequenceActivity(i);
+
+				//	if (originalActivity != -1 && originalActivity == tempActitivity || originalActivity == -1 && tempActitivity == 213) {
+				//		newActivity = i;
+
+				//		for (size_t t = 0; t < 4; t++) {
+				//			if (viemodel->GetSequenceActivity(i + t) == tempActitivity)
+				//				num++;
+				//		}
+
+				//		break;
+				//	}
+				//}
+				//if (originalActivity == -1 && newActivity == 1)
+				//	newActivity = Sequence;
+
+				//if (!num)
+				//	Sequence = newActivity;
+				//else
+				//	Sequence = (rand() % ((newActivity + num - 1) - newActivity + 1) + newActivity);//Math::RandomInt(newActivity, newActivity + num) - 1;//(rand() % (newActivity + num - 1)) + newActivity;
+
+				//viemodel->SendViewModelMatchingSequence(Sequence);
 			//}
-
-			//if (originalactivity == -1 && newActivity == 1)
-			//	newActivity = Sequence;
-			//if (!num)
-			//	Sequence = newActivity;
-			//else
-			//	Sequence = Math::RandomInt(newActivity, newActivity + num - 1);
-
-			//viemodel->SendViewModelMatchingSequence(Sequence);
 		}
 
 		if (g_Options.SkinChanger_SkinChanger) {

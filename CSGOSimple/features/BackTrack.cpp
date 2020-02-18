@@ -27,7 +27,7 @@ void BackTrack::update(ClientFrameStage_t stage)
 		for (int i = 1; i <= g_EngineClient->GetMaxClients(); i++) {
 			C_BasePlayer* entity = (C_BasePlayer*)g_EntityList->GetClientEntity(i);
 			if (!entity || entity == local || entity->IsDormant() || !entity->IsAlive() || entity->m_iTeamNum() == local->m_iTeamNum() || entity->m_bGunGameImmunity()) {
-				//records[i].clear(); //Thats the problem with dme backtrack chams
+				records[i].clear(); //Thats the problem with dme backtrack chams
 				continue;
 			}
 

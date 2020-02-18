@@ -354,6 +354,7 @@ public:
 	NETVAR(CHandle<C_BasePlayer>, m_hOwner, "DT_BaseViewModel", "m_hOwner");
 	NETPROP(m_nSequence, "DT_BaseViewModel", "m_nSequence");
 	void SendViewModelMatchingSequence(int sequence);
+	int GetSequenceActivity(int sequence);
 };
 
 class AnimationLayer

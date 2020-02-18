@@ -97,9 +97,10 @@ bool C_BaseCombatWeapon::IsKnife()
 	short index = this->m_Item().m_iItemDefinitionIndex();
 	/*if (this->m_Item().m_iItemDefinitionIndex() == WEAPON_TASER) return false;
 	return GetCSWeaponData()->iWeaponType == WEAPONTYPE_KNIFE;*/
-	if (index == WEAPON_KNIFE || index == WEAPON_KNIFE_T || index == WEAPON_KNIFEGG || index == WEAPON_BAYONET || index == WEAPON_KNIFE_FLIP || index == WEAPON_KNIFE_GUT || index == WEAPON_KNIFE_KARAMBIT
+	if (index == WEAPON_KNIFE || index == WEAPON_KNIFE_T || index == WEAPON_KNIFEGG || index == WEAPON_KNIFE_BAYONET || index == WEAPON_KNIFE_FLIP || index == WEAPON_KNIFE_GUT || index == WEAPON_KNIFE_KARAMBIT
 		|| index == WEAPON_KNIFE_M9_BAYONET || index == WEAPON_KNIFE_TACTICAL || index == WEAPON_KNIFE_FALCHION || index == WEAPON_KNIFE_SURVIVAL_BOWIE || index == WEAPON_KNIFE_BUTTERFLY
-		|| index == WEAPON_KNIFE_PUSH || index == WEAPON_KNIFE_URSUS || index == WEAPON_KNIFE_GYPSY_JACKKNIFE || index == WEAPON_KNIFE_STILETTO || index == WEAPON_KNIFE_WIDOWMAKER)
+		|| index == WEAPON_KNIFE_PUSH || index == WEAPON_KNIFE_URSUS || index == WEAPON_KNIFE_GYPSY_JACKKNIFE || index == WEAPON_KNIFE_STILETTO || index == WEAPON_KNIFE_WIDOWMAKER
+		|| index == WEAPON_KNIFE_SKELETON || index == WEAPON_KNIFE_NOMAD || index == WEAPON_KNIFE_SURVIVAL || index == WEAPON_KNIFE_CLASSIC || index == WEAPON_KNIFE_PARACORD)
 		return true;
 	else
 		return false;
@@ -199,9 +200,27 @@ AnimationLayer *C_BasePlayer::GetAnimOverlay(int i)
 	return nullptr;
 }
 
+int C_BaseViewModel::GetSequenceActivity(int sequence)
+{
+	auto model = this->GetModel();
+	auto hdr = g_MdlInfo->GetStudiomodel(model);
+
+	if (!hdr)
+		return -1;
+
+	// sig for stuidohdr_t version: 53 56 8B F1 8B DA 85 F6 74 55
+	// sig for C_BaseAnimating version: 55 8B EC 83 7D 08 FF 56 8B F1 74 3D
+	// c_csplayer vfunc 242, follow calls to find the function.
+	// Thanks @Kron1Q for merge request
+	static auto get_sequence_activity = reinterpret_cast<int(__fastcall*)(void*, studiohdr_t*, int)>(Utils::PatternScan(GetModuleHandle("client_panorama.dll"), "55 8B EC 53 8B 5D 08 56 8B F1 83"));
+
+	return get_sequence_activity(this, hdr, sequence);
+}
+
 int C_BasePlayer::GetSequenceActivity(int sequence)
 {
-	auto hdr = g_MdlInfo->GetStudiomodel(this->GetModel());
+	auto model = this->GetModel();
+	auto hdr = g_MdlInfo->GetStudiomodel(model);
 
 	if (!hdr)
 		return -1;
@@ -468,7 +487,7 @@ void C_EconItemView::SetGloveModelIndex(int modelIndex)
 
 void C_BaseViewModel::SendViewModelMatchingSequence(int sequence)
 {
-	return CallVFunction<void(__thiscall*)(void*, int)>(this, 246)(this, sequence);
+	CallVFunction<void(__thiscall*)(void*, int)>(this, 246)(this, sequence); //246
 }
 
 float_t C_BasePlayer::m_flSpawnTime()

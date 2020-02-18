@@ -146,9 +146,6 @@
     <ClCompile Include="features\LogEvents.cpp">
       <Filter>Source Files\features</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\features\Prediction.cpp">
-      <Filter>Source Files\features</Filter>
-    </ClCompile>
     <ClCompile Include="features\BackTrack.cpp">
       <Filter>Source Files\features</Filter>
     </ClCompile>
@@ -475,89 +472,5 @@
     <ClInclude Include="features\SpotMarkers.hpp">
       <Filter>Header Files\features</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\..\CRNYY%27s Internal\CSGOSimple\CRNYY%27s Internal.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\0.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\0_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\1.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\1_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\2.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\2_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\3.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\3_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\4.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\4_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\6.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\6_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\7.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\7_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\8.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\8_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\9.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\9_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\10.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\10_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\11.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\11_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\13.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\13_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\14.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\14_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\16.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\16_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\17.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\17_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\18_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\19.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\19_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\24.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\24_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\25.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\25_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\26.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\26_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\27.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\27_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\28.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\28_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\29.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\29_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\30.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\30_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\31.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\31_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\32.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\32_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\33.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\33_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\34.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\34_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\35.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\35_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\36.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\36_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\38.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\38_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\39.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\39_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\40.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\40_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\42.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\42_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\43.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\43_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\44.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\44_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\45.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\45_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\46.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\46_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\47.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\47_.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\48.png" />
-    <Image Include="..\..\CRNYY%27s Internal\iconlib\48_.png" />
   </ItemGroup>
 </Project>

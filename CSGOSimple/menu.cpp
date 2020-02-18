@@ -151,7 +151,7 @@ void Menu::Render()
 
 	static const char* AATypeYaw[]{ "Auto", "FreeStanding", "Legit", "Spinbot", "Jitter", "SideWays", "Fake SideWays", "Static", "Fake Static", "Custom" };
 
-	static const char* Knives[]{ "Bayonet", "Flip Knife", "Gut Knife", "Karambit", "M9 Bayonet", "Huntsman", "Falchion", "Bowie", "Butterfly", "Shaddow Daggers", "Ursus", "Navaja", "Stiletto", "Talon" };
+	static const char* Knives[]{ "Bayonet", "Flip Knife", "Gut Knife", "Karambit", "M9 Bayonet", "Huntsman", "Falchion", "Bowie", "Butterfly", "Shaddow Daggers", "Ursus", "Navaja", "Stiletto", "Talon", "Skeleton", "Nomad", "Survival", "Classic", "Paracord"};
 
 	static const char* Weapons[]{ "WEAPON_DEAGLE", "WEAPON_ELITE", "WEAPON_FIVESEVEN", "WEAPON_GLOCK", "WEAPON_AK47", "WEAPON_AUG", "WEAPON_AWP", "WEAPON_FAMAS", "WEAPON_G3SG1", "WEAPON_GALILAR",
 		"WEAPON_M249", "WEAPON_M4A1", "WEAPON_MAC10", "WEAPON_P90", "WEAPON_MP5", "WEAPON_UMP45", "WEAPON_XM1014", "WEAPON_BIZON", "WEAPON_MAG7", "WEAPON_NEGEV", "WEAPON_SAWEDOFF", "WEAPON_HKP2000",
@@ -1044,7 +1044,7 @@ void Menu::Render()
 					switch (g_Options.KnifeCT)
 					{
 					case 0:
-						g_Options.WEAPON_KNIFECT = WEAPON_BAYONET;
+						g_Options.WEAPON_KNIFECT = WEAPON_KNIFE_BAYONET;
 						break;
 					case 1:
 						g_Options.WEAPON_KNIFECT = WEAPON_KNIFE_FLIP;
@@ -1085,6 +1085,21 @@ void Menu::Render()
 					case 13:
 						g_Options.WEAPON_KNIFECT = WEAPON_KNIFE_WIDOWMAKER;
 						break;
+					case 14:
+						g_Options.WEAPON_KNIFECT = WEAPON_KNIFE_SKELETON;
+						break;
+					case 15:
+						g_Options.WEAPON_KNIFECT = WEAPON_KNIFE_NOMAD;
+						break;
+					case 16:
+						g_Options.WEAPON_KNIFECT = WEAPON_KNIFE_SURVIVAL;
+						break;
+					case 17:
+						g_Options.WEAPON_KNIFECT = WEAPON_KNIFE_CLASSIC;
+						break;
+					case 18:
+						g_Options.WEAPON_KNIFECT = WEAPON_KNIFE_PARACORD;
+						break;
 					default:
 						break;
 					}
@@ -1092,7 +1107,7 @@ void Menu::Render()
 					switch (g_Options.KnifeT)
 					{
 					case 0:
-						g_Options.WEAPON_KNIFET = WEAPON_BAYONET;
+						g_Options.WEAPON_KNIFET = WEAPON_KNIFE_BAYONET;
 						break;
 					case 1:
 						g_Options.WEAPON_KNIFET = WEAPON_KNIFE_FLIP;
@@ -1133,6 +1148,21 @@ void Menu::Render()
 					case 13:
 						g_Options.WEAPON_KNIFET = WEAPON_KNIFE_WIDOWMAKER;
 						break;
+					case 14:
+						g_Options.WEAPON_KNIFET = WEAPON_KNIFE_SKELETON;
+						break;
+					case 15:
+						g_Options.WEAPON_KNIFET = WEAPON_KNIFE_NOMAD;
+						break;
+					case 16:
+						g_Options.WEAPON_KNIFET = WEAPON_KNIFE_SURVIVAL;
+						break;
+					case 17:
+						g_Options.WEAPON_KNIFET = WEAPON_KNIFE_CLASSIC;
+						break;
+					case 18:
+						g_Options.WEAPON_KNIFET = WEAPON_KNIFE_PARACORD;
+						break;
 					default:
 						break;
 					}
@@ -1148,7 +1178,7 @@ void Menu::Render()
 				ImGui::SliderFloat("Glove Wear", &g_Options.GLOVE_WEAR, 0.00001f, 1.f);
 
 				if (OldGloveModel != g_Options.GLOVE_MODEL || OldGloveSkin != g_Options.GLOVE_SKIN) {
-					skinchanger.SetGlove = true;
+					skinchanger.SetGlove = false;
 					skinchanger.SetForceFullUpdate = true;
 				}
 
@@ -1157,7 +1187,10 @@ void Menu::Render()
 
 				ImGui::NextColumn();
 
-				std::string textconfig = static_cast<std::string>("Loaded Config: ") + Files[SelectedConfignow].c_str();
+				std::string textconfig = "Couldn't Find any Configs!";
+				if(Files.size() > 0)
+					std::string textconfig = static_cast<std::string>("Loaded Config: ") + Files[SelectedConfignow].c_str();
+
 				ImGui::TextColored(ImVec4(0, 255, 0, 255), textconfig.c_str());
 				ImGui::SameLine();
 				if (ImGui::Button("Refresh")) {
